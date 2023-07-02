@@ -1,4 +1,7 @@
+import 'package:ecommerce_store/constants/colors.dart';
+import 'package:ecommerce_store/widgets/banner_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 void main() => runApp(const MyApp());
 
@@ -7,16 +10,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = PageController(viewportFraction: 0.8);
     return MaterialApp(
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World'),
+      home: SafeArea(
+        child: Scaffold(
+          body: BannerSlider(controller: controller),
         ),
       ),
     );
   }
-
-
 }
+
+
