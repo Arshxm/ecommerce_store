@@ -1,7 +1,6 @@
-import 'package:ecommerce_store/constants/colors.dart';
-import 'package:ecommerce_store/widgets/banner_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'constants/colors.dart';
+import 'widgets/category_horizontal_itemList.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,17 +9,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = PageController(viewportFraction: 0.8);
     return MaterialApp(
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
-          body: BannerSlider(controller: controller),
+          backgroundColor: ConstColor.backgroundScreenColor,
+          body: Center(
+              child: Container(
+            height: 216,
+            width: 160,
+          )),
         ),
       ),
     );
   }
 }
 
+class CategoryListViewBuilder extends StatelessWidget {
+  const CategoryListViewBuilder({
+    super.key,
+  });
 
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 44),
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+            ),
+            child: CategoryHorizontalItemList(),
+          );
+        },
+        itemCount: 10,
+        scrollDirection: Axis.horizontal,
+      ),
+    );
+  }
+}
