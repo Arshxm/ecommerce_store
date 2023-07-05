@@ -1,6 +1,10 @@
+import 'package:ecommerce_store/screens/home_screen.dart';
+import 'package:ecommerce_store/widgets/banner_widget.dart';
+import 'package:ecommerce_store/widgets/myBehavior.dart';
 import 'package:flutter/material.dart';
 import 'constants/colors.dart';
 import 'widgets/category_horizontal_itemList.dart';
+import 'widgets/product_item.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,18 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyBehavior(),
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: SafeArea(
-        child: Scaffold(
-          backgroundColor: ConstColor.backgroundScreenColor,
-          body: Center(
-              child: Container(
-            height: 216,
-            width: 160,
-          )),
-        ),
-      ),
+      home: const HomeScreen()
     );
   }
 }
@@ -34,11 +30,11 @@ class CategoryListViewBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 44),
+      padding: const EdgeInsets.only(right: 44),
       child: ListView.builder(
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(
+          return const Padding(
+            padding: EdgeInsets.only(
               left: 20,
             ),
             child: CategoryHorizontalItemList(),

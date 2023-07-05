@@ -4,12 +4,9 @@ import '../constants/colors.dart';
 
 
 class BannerSlider extends StatelessWidget {
-  const BannerSlider({
-    super.key,
-    required this.controller,
-  });
+  BannerSlider({super.key,});
 
-  final PageController controller;
+  final PageController controller = PageController(viewportFraction: 0.8);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +23,7 @@ class BannerSlider extends StatelessWidget {
                     const EdgeInsets.only(left: 12, right: 12, top: 12),
                 child: Container(
                   height: 200,
-                  decoration: BoxDecoration(color: Colors.redAccent),
+                  decoration: const BoxDecoration(color: Colors.redAccent),
                 ),
               );
             }),
@@ -36,12 +33,12 @@ class BannerSlider extends StatelessWidget {
         Positioned(
           bottom: 5,
           child: SmoothPageIndicator(
-              effect:  ExpandingDotsEffect(
+              effect:  const ExpandingDotsEffect(
                 expansionFactor: 5,
                 dotHeight: 10,
                 dotWidth: 10,
                 dotColor: Colors.white,
-                activeDotColor: ConstColor.blueIndicator,
+                activeDotColor: ConstColor.blue,
               ),
               controller: controller,
               count: 3),
