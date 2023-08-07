@@ -98,7 +98,7 @@ class ProductItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "498,000,000",
+                        "49,800,000",
                         style: TextStyle(
                           fontFamily: 'RM',
                           fontSize: 12,
@@ -108,7 +108,7 @@ class ProductItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "488,000,000",
+                        "48,800,000",
                         style: TextStyle(
                           fontFamily: 'RM',
                           fontSize: 16,

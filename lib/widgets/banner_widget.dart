@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../constants/colors.dart';
+import 'category_horizontal_itemList.dart';
 
 
 class BannerSlider extends StatelessWidget {
@@ -44,6 +45,30 @@ class BannerSlider extends StatelessWidget {
               count: 3),
         ),
       ],
+    );
+  }
+}
+class CategoryListViewBuilder extends StatelessWidget {
+  const CategoryListViewBuilder({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 44),
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          return const Padding(
+            padding: EdgeInsets.only(
+              left: 20,
+            ),
+            child: CategoryHorizontalItemList(),
+          );
+        },
+        itemCount: 10,
+        scrollDirection: Axis.horizontal,
+      ),
     );
   }
 }

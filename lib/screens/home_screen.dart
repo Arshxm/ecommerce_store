@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../constants/colors.dart';
-import '../main.dart';
 import '../widgets/banner_widget.dart';
 import '../widgets/product_item.dart';
 
