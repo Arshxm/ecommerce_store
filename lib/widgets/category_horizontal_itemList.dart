@@ -13,8 +13,8 @@ class CategoryHorizontalItemList extends StatelessWidget {
         Container(
           height: 56,
           width: 56,
-          decoration: ShapeDecoration(
-            shadows: const [
+          decoration: const ShapeDecoration(
+            shadows: [
               BoxShadow(
                   color: Colors.red,
                   blurRadius: 15,
