@@ -90,6 +90,7 @@ class CardScreen extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("49,000,000"),
                     SizedBox(
