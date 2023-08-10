@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:ecommerce_store/constants/colors.dart';
-import 'package:ecommerce_store/screens/card_screen.dart';
+import 'package:ecommerce_store/screens/cart_screen.dart';
 import 'package:ecommerce_store/screens/product_details_screen.dart';
 import 'package:ecommerce_store/screens/product_list_screen.dart';
 import 'package:ecommerce_store/screens/category_screen.dart';
@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: const CardScreen()
+        body: const CartScreen()
         // IndexedStack(
         //   index: selectedBottomNavigationIndex,
         //   children: botNavigation(),

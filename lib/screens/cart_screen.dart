@@ -2,8 +2,8 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:ecommerce_store/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-class CardScreen extends StatelessWidget {
-  const CardScreen({super.key});
+class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
