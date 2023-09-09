@@ -1,3 +1,5 @@
+import 'package:dartz/dartz_unsafe.dart';
+import 'package:ecommerce_store/data/repository/banner_repository.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../widgets/banner_widget.dart';
@@ -15,6 +17,20 @@ class HomeScreen extends StatelessWidget {
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
+              SliverToBoxAdapter(
+                child: ElevatedButton(
+                    onPressed: () async {
+                      var response = await BannerRepository().getBanners();
+                      response.fold((l) {
+                        print(l);
+                      }, (r) {
+                        r.forEach((element) {
+                          print(element.id);
+                        });
+                      });
+                    },
+                    child: Text("click")),
+              ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding:

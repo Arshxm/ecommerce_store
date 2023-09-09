@@ -21,24 +21,24 @@ class ProductListScreen extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Colors.white,
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Image.asset('assets/images/icon_apple_blue.png'),
-                      const Expanded(
-                        child: Text(
-                          "Best Sellers",
-                          style: TextStyle(
-                              color: ConstColor.blue,
-                              fontFamily: 'RB',
-                              fontSize: 16),
-                          textAlign: TextAlign.center,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/images/icon_apple_blue.png'),
+                        const Expanded(
+                          child: Text(
+                            "Best Sellers",
+                            style: TextStyle(
+                                color: ConstColor.blue,
+                                fontFamily: 'RB',
+                                fontSize: 16),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -50,6 +50,7 @@ class ProductListScreen extends StatelessWidget {
                   (context, index) {
                     return ProductItem();
                   },
+                  childCount: 20
                 ),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
