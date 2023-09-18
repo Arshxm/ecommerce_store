@@ -1,23 +1,15 @@
 import 'dart:ui';
-
-import 'package:ecommerce_store/bloc/authentication/auth_bloc.dart';
 import 'package:ecommerce_store/bloc/category/category_bloc.dart';
+import 'package:ecommerce_store/bloc/home/home_bloc.dart';
 import 'package:ecommerce_store/constants/colors.dart';
-import 'package:ecommerce_store/data/dataSource/authentication_datasource.dart';
-import 'package:ecommerce_store/data/repository/authentication_repository.dart';
 import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/screens/cart_screen.dart';
-import 'package:ecommerce_store/screens/login_screen.dart';
-import 'package:ecommerce_store/screens/product_details_screen.dart';
-import 'package:ecommerce_store/screens/product_list_screen.dart';
 import 'package:ecommerce_store/screens/category_screen.dart';
 import 'package:ecommerce_store/screens/home_screen.dart';
 import 'package:ecommerce_store/screens/profile_screen.dart';
-import 'package:ecommerce_store/util/auth_manager.dart';
 import 'package:ecommerce_store/widgets/myBehavior.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +25,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var selectedBottomNavigationIndex = 0;
+  var selectedBottomNavigationIndex = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -167,8 +159,17 @@ class _MyAppState extends State<MyApp> {
     return <Widget>[
       const ProfileScreen(),
       const CartScreen(),
-      BlocProvider(create: (context)=> CategoryBloc(), child: CategoryScreen(),),
-      const HomeScreen()
+      BlocProvider(
+        create: (context) => CategoryBloc(),
+        child: CategoryScreen(),
+      ),
+      Directionality(
+        textDirection: TextDirection.rtl,
+        child: BlocProvider(
+          create: (context) => HomeBloc(),
+          child: HomeScreen(),
+        ),
+      ),
     ];
   }
 }
