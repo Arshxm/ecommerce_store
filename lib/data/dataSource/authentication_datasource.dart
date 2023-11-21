@@ -32,13 +32,13 @@ class AuthenticationRemote implements IAuthenticationDataSource {
   Future<String> login(String username, String password) async {
     try {
       var response = await _dio.post('collections/users/auth-with-password',
-        data: {'identity': username, 'password': password});
-        if (response.statusCode == 200) {
-          return response.data?['token'];
-        }
-    } on DioException catch(ex) {
+          data: {'identity': username, 'password': password});
+      if (response.statusCode == 200) {
+        return response.data?['token'];
+      }
+    } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
-    }catch(ex){
+    } catch (ex) {
       throw ApiException(0, "unknown error");
     }
     return '';
