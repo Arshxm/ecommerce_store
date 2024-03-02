@@ -48,7 +48,8 @@ class ProductListScreen extends StatelessWidget {
               sliver: SliverGrid(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return ProductItem();
+                    return Text('1');
+                    //ProductItem();
                   },
                   childCount: 20
                 ),

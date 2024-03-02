@@ -51,7 +51,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       Image.asset('assets/images/icon_apple_blue.png'),
                       const Expanded(
                         child: Text(
-                          "Categories",
+                          "",
                           style: TextStyle(
                               color: ConstColor.blue,
                               fontFamily: 'RB',

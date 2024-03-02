@@ -1,3 +1,4 @@
+import 'package:ecommerce_store/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecommerce_store/bloc/home/home_bloc.dart';
@@ -34,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
             physics: const BouncingScrollPhysics(),
             slivers: [
               _getSearchBox(),
+              //Banner States
               if (state is HomeLoadingState) ...[
                 SliverToBoxAdapter(
                   child: Center(
@@ -56,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 })
               ],
               _getCategoryTitle(),
+              //Category States
               if (state is HomeResponseState) ...[
                 state.categoryList.fold((l) {
                   return SliverToBoxAdapter(
@@ -63,13 +66,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }, (categoryList) {
                   return _getCategoryList(categoryList: categoryList);
-                  
                 })
               ],
               _getBestSellersTitle(),
-              _getBestSellerProductsList(),
+              if (state is HomeRequestBestSellerState) ...[
+                state.bestSellerProductList.fold((l) {
+                  return SliverToBoxAdapter(
+                    child: Text(l),
+                  );
+                }, (r) {
+                  return _getBestSellerProductsList(r);
+                })
+              ],
               _getMostViewedTitle(),
-              _getMostViewedProductList(),
+              if (state is HomeRequestHotestState) ...{
+                state.hotestProductList.fold((l) {
+                  return SliverToBoxAdapter(
+                    child: Text(l),
+                  );
+                }, (r) {
+                  return _getMostViewedProductList(
+                    productList: r,
+                  );
+                })
+              },
             ],
           );
         }),
@@ -79,7 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _getMostViewedProductList extends StatelessWidget {
-  const _getMostViewedProductList({
+  List<Product> productList;
+  _getMostViewedProductList({
+    required this.productList,
     super.key,
   });
 
@@ -92,12 +114,14 @@ class _getMostViewedProductList extends StatelessWidget {
           height: 230,
           child: ListView.builder(
             itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: ProductItem(),
+              return Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: ProductItem(
+                  productList: productList[index],
+                ),
               );
             },
-            itemCount: 10,
+            itemCount: productList.length,
             scrollDirection: Axis.horizontal,
           ),
         ),
@@ -161,9 +185,11 @@ class _getCategoryList extends StatelessWidget {
 }
 
 class _getBestSellerProductsList extends StatelessWidget {
-  const _getBestSellerProductsList({
-    super.key,
-  });
+  List<Product> bestSellerProductList;
+  _getBestSellerProductsList(
+    this.bestSellerProductList, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -174,12 +200,14 @@ class _getBestSellerProductsList extends StatelessWidget {
           height: 230,
           child: ListView.builder(
             itemBuilder: (context, index) {
-              return const Padding(
+              return Padding(
                 padding: EdgeInsets.only(left: 20),
-                child: ProductItem(),
+                child: ProductItem(
+                  productList: bestSellerProductList[index],
+                ),
               );
             },
-            itemCount: 10,
+            itemCount: bestSellerProductList.length,
             scrollDirection: Axis.horizontal,
           ),
         ),

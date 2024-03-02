@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce_store/data/dataSource/authentication_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/banner_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/category_datasource.dart';
+import 'package:ecommerce_store/data/dataSource/product_datasource.dart';
 import 'package:ecommerce_store/data/repository/authentication_repository.dart';
 import 'package:ecommerce_store/data/repository/banner_repository.dart';
 import 'package:ecommerce_store/data/repository/category_repository.dart';
+import 'package:ecommerce_store/data/repository/product_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,6 +37,8 @@ Future<void> getItInit() async{
 
   locator.registerFactory<IBannerDatasource>(() => BannerRemoteDatasource());
 
+  locator.registerFactory<IProductDatasource>(() => ProductRemoteDatasource());
+
 
 
   //Repositories 
@@ -44,4 +48,6 @@ Future<void> getItInit() async{
   locator.registerFactory<ICategoryRepository>(() => CategoryRepository());
 
   locator.registerFactory<IBannerRepository>(() => BannerRepository()); 
+
+  locator.registerFactory<IProductRepository>(() => ProductRepository()); 
 }

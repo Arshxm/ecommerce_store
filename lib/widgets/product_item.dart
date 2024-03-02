@@ -1,9 +1,13 @@
+import 'package:ecommerce_store/model/product.dart';
+import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({
+  Product productList;
+   ProductItem({
+    required this.productList,
     super.key,
   });
 
@@ -17,6 +21,7 @@ class ProductItem extends StatelessWidget {
       height: 216,
       width: 160,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
             height: 10,
@@ -24,7 +29,7 @@ class ProductItem extends StatelessWidget {
           Stack(
             alignment: Alignment.center,
             children: [
-              Image.asset('assets/images/iphone.png'),
+              SizedBox(width: 100,height: 100, child: CachedImage(imageUrl: productList.thumbnail ,)),
               Container(),
               Positioned(
                 right: 10,
@@ -39,14 +44,14 @@ class ProductItem extends StatelessWidget {
                     color: ConstColor.red,
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
-                  child: const Row(
+                  child:Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: 3, horizontal: 6),
                         child: Text(
-                          '3%',
+                          '${productList.persent!.round().toString()}%',
                           style: TextStyle(
                               color: Colors.white,
                               fontFamily: 'RM',
@@ -60,13 +65,17 @@ class ProductItem extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          const Text(
-            'iPhone 13 PRO MAX',
-            style: TextStyle(fontFamily: 'RM', fontSize: 14),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              '${productList.name}',
+              style: TextStyle(fontFamily: 'RM', fontSize: 14, overflow:TextOverflow.ellipsis),
+              maxLines: 1,
+            ),
           ),
           const Spacer(),
           Container(
-            height: 53,
+            height: 56,
             decoration: const BoxDecoration(
               color: ConstColor.blue,
               borderRadius: BorderRadius.only(
@@ -94,11 +103,11 @@ class ProductItem extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  const Column(
+                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "49,800,000",
+                        "${productList.price}",
                         style: TextStyle(
                           fontFamily: 'RM',
                           fontSize: 12,
@@ -108,7 +117,7 @@ class ProductItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "48,800,000",
+                        "${productList.realPrice}",
                         style: TextStyle(
                           fontFamily: 'RM',
                           fontSize: 16,

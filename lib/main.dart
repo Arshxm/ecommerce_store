@@ -31,7 +31,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       scrollBehavior: MyBehavior(),
-      theme: ThemeData(),
+      theme: ThemeData(
+        fontFamily: "SB"
+      ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body:
