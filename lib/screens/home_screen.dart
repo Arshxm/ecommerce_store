@@ -34,62 +34,67 @@ class _HomeScreenState extends State<HomeScreen> {
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              _getSearchBox(),
               //Banner States
-              if (state is HomeLoadingState) ...[
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator()),
+              if (state is HomeLoadingState) ...{
+                const SliverToBoxAdapter(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator()),
+                    ],
                   ),
                 )
-              ],
-              if (state is HomeResponseState) ...[
-                state.response.fold((l) {
-                  return SliverToBoxAdapter(
-                    child: Text(l),
-                  );
-                }, (r) {
-                  return _getBanners(
-                    list: r,
-                  );
-                })
-              ],
-              _getCategoryTitle(),
-              //Category States
-              if (state is HomeResponseState) ...[
-                state.categoryList.fold((l) {
-                  return SliverToBoxAdapter(
-                    child: Text(l),
-                  );
-                }, (categoryList) {
-                  return _getCategoryList(categoryList: categoryList);
-                })
-              ],
-              _getBestSellersTitle(),
-              if (state is HomeRequestBestSellerState) ...[
-                state.bestSellerProductList.fold((l) {
-                  return SliverToBoxAdapter(
-                    child: Text(l),
-                  );
-                }, (r) {
-                  return _getBestSellerProductsList(r);
-                })
-              ],
-              _getMostViewedTitle(),
-              if (state is HomeRequestHotestState) ...{
-                state.hotestProductList.fold((l) {
-                  return SliverToBoxAdapter(
-                    child: Text(l),
-                  );
-                }, (r) {
-                  return _getMostViewedProductList(
-                    productList: r,
-                  );
-                })
-              },
+              } else ...{
+                _getSearchBox(),
+                if (state is HomeResponseState) ...[
+                  state.response.fold((l) {
+                    return SliverToBoxAdapter(
+                      child: Text(l),
+                    );
+                  }, (r) {
+                    return _getBanners(
+                      list: r,
+                    );
+                  })
+                ],
+                _getCategoryTitle(),
+                //Category States
+                if (state is HomeResponseState) ...[
+                  state.categoryList.fold((l) {
+                    return SliverToBoxAdapter(
+                      child: Text(l),
+                    );
+                  }, (categoryList) {
+                    return _getCategoryList(categoryList: categoryList);
+                  })
+                ],
+                _getBestSellersTitle(),
+                if (state is HomeResponseState) ...[
+                  state.bestSellerProductList.fold((l) {
+                    return SliverToBoxAdapter(
+                      child: Text(l),
+                    );
+                  }, (r) {
+                    return _getBestSellerProductsList(r);
+                  })
+                ],
+                _getMostViewedTitle(),
+                if (state is HomeResponseState) ...{
+                  state.hotestProductList.fold((l) {
+                    return SliverToBoxAdapter(
+                      child: Text(l),
+                    );
+                  }, (r) {
+                    return _getMostViewedProductList(
+                      productList: r,
+                    );
+                  })
+                },
+              }
             ],
           );
         }),

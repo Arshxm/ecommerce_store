@@ -13,15 +13,9 @@ class HomeResponseState extends HomeState {
   Either<String, List<HomeBanner>> response;
   Either<String, List<Category>> categoryList;
   Either<String, List<Product>> productList;
-  HomeResponseState(this.response, this.categoryList, this.productList);
+  Either<String, List<Product>> hotestProductList;
+  Either<String, List<Product>> bestSellerProductList;
+  HomeResponseState(this.response, this.categoryList, this.productList, this.bestSellerProductList, this.hotestProductList);
 }
 
-class HomeRequestHotestState extends HomeState{
-    Either<String, List<Product>> hotestProductList;
-  HomeRequestHotestState(this.hotestProductList);
-}
-class HomeRequestBestSellerState extends HomeState{
-    Either<String, List<Product>> bestSellerProductList;
-  HomeRequestBestSellerState(this.bestSellerProductList);
-}
 
