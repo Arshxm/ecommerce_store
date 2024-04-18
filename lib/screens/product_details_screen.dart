@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
-import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,6 +11,10 @@ import 'package:ecommerce_store/constants/colors.dart';
 import 'package:ecommerce_store/data/repository/product_detail_repository.dart';
 import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/model/product_image.dart';
+import 'package:ecommerce_store/model/product_variant.dart';
+import 'package:ecommerce_store/model/variant.dart';
+import 'package:ecommerce_store/model/variant_type.dart';
+import 'package:ecommerce_store/widgets/cached_image.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key});
@@ -97,7 +100,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                   if (state is ProductDetailResponseState) ...{
-                    state.getProductImage.fold((l) {
+                    state.productImages.fold((l) {
                       return SliverToBoxAdapter(
                         child: Text(l),
                       );
@@ -105,152 +108,108 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       return GalleryWidget(productImageList: response);
                     })
                   },
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                        right: 44,
-                        left: 44,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "انتخاب رنگ",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 26,
-                                height: 26,
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                width: 26,
-                                height: 26,
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                width: 26,
-                                height: 26,
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                        right: 44,
-                        left: 44,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "انتخاب حافظه داخلی",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 74,
-                                height: 26,
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    "128",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(8)),
-                                    border: Border.all(
-                                        width: 1, color: ConstColor.grey)),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                width: 74,
-                                height: 26,
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    "128",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(8)),
-                                    border: Border.all(
-                                        width: 1, color: ConstColor.grey)),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                width: 74,
-                                height: 26,
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 5),
-                                  child: Text(
-                                    "128",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(8)),
-                                    border: Border.all(
-                                        width: 1, color: ConstColor.grey)),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  if (state is ProductDetailResponseState) ...{
+                    state.productVariant.fold(
+                      (l) {
+                        return SliverToBoxAdapter(
+                          child: Text(l),
+                        );
+                      },
+                      (productVariantList) {
+                        return VariantContainerGenerator(
+                          productVariantList: productVariantList,
+                        );
+                      },
+                    )
+                  },
+                  // SliverToBoxAdapter(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(
+                  //       top: 20,
+                  //       right: 44,
+                  //       left: 44,
+                  //     ),
+                  //     child: Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         const Text(
+                  //           "انتخاب حافظه داخلی",
+                  //           style: TextStyle(fontSize: 12),
+                  //         ),
+                  //         const SizedBox(
+                  //           height: 10,
+                  //         ),
+                  //         Row(
+                  //           children: [
+                  //             Container(
+                  //               width: 74,
+                  //               height: 26,
+                  //               child: const Padding(
+                  //                 padding: EdgeInsets.symmetric(
+                  //                     horizontal: 20, vertical: 5),
+                  //                 child: Text(
+                  //                   "128",
+                  //                   textAlign: TextAlign.center,
+                  //                   style: TextStyle(fontSize: 12),
+                  //                 ),
+                  //               ),
+                  //               decoration: BoxDecoration(
+                  //                   color: Colors.white,
+                  //                   borderRadius: const BorderRadius.all(
+                  //                       Radius.circular(8)),
+                  //                   border: Border.all(
+                  //                       width: 1, color: ConstColor.grey)),
+                  //             ),
+                  //             const SizedBox(
+                  //               width: 10,
+                  //             ),
+                  //             Container(
+                  //               width: 74,
+                  //               height: 26,
+                  //               child: const Padding(
+                  //                 padding: EdgeInsets.symmetric(
+                  //                     horizontal: 20, vertical: 5),
+                  //                 child: Text(
+                  //                   "128",
+                  //                   textAlign: TextAlign.center,
+                  //                   style: TextStyle(fontSize: 12),
+                  //                 ),
+                  //               ),
+                  //               decoration: BoxDecoration(
+                  //                   color: Colors.white,
+                  //                   borderRadius: const BorderRadius.all(
+                  //                       Radius.circular(8)),
+                  //                   border: Border.all(
+                  //                       width: 1, color: ConstColor.grey)),
+                  //             ),
+                  //             const SizedBox(
+                  //               width: 10,
+                  //             ),
+                  //             Container(
+                  //               width: 74,
+                  //               height: 26,
+                  //               child: const Padding(
+                  //                 padding: EdgeInsets.symmetric(
+                  //                     horizontal: 20, vertical: 5),
+                  //                 child: Text(
+                  //                   "128",
+                  //                   textAlign: TextAlign.center,
+                  //                   style: TextStyle(fontSize: 12),
+                  //                 ),
+                  //               ),
+                  //               decoration: BoxDecoration(
+                  //                   color: Colors.white,
+                  //                   borderRadius: const BorderRadius.all(
+                  //                       Radius.circular(8)),
+                  //                   border: Border.all(
+                  //                       width: 1, color: ConstColor.grey)),
+                  //             ),
+                  //           ],
+                  //         )
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
 
                   //Technical details
 
@@ -482,12 +441,86 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 }
 
-class GalleryWidget extends StatelessWidget {
+class VariantContainerGenerator extends StatelessWidget {
+  List<ProductVariant> productVariantList;
+  VariantContainerGenerator({
+    Key? key,
+    required this.productVariantList,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          for (var productVariant in productVariantList) ...{
+            if (productVariant.variantList.isNotEmpty) ...{
+              VariantGeneratorChild(
+                productVariant: productVariant,
+              )
+            }
+          },
+        ],
+      ),
+    );
+  }
+}
+
+class VariantGeneratorChild extends StatelessWidget {
+  ProductVariant productVariant;
+  VariantGeneratorChild({super.key, required this.productVariant});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 20,
+        right: 44,
+        left: 44,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            productVariant.variantType.title!,
+            style: TextStyle(fontSize: 12),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              if (productVariant.variantType.type == VariantTypeEnum.COLOR) ...{
+                ColorVariantList(variantList: productVariant.variantList) ??
+                    Text("null"),
+              },
+              if (productVariant.variantType.type ==
+                  VariantTypeEnum.STORAGE) ...{
+                StorageVariantList(
+                    storageVariantList: productVariant.variantList),
+              }
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class GalleryWidget extends StatefulWidget {
   List<ProductImage> productImageList;
+
   GalleryWidget({
     Key? key,
     required this.productImageList,
   }) : super(key: key);
+
+  @override
+  State<GalleryWidget> createState() => _GalleryWidgetState();
+}
+
+class _GalleryWidgetState extends State<GalleryWidget> {
+  int selectedItem = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -518,7 +551,8 @@ class GalleryWidget extends StatelessWidget {
                       SizedBox(
                           height: double.infinity,
                           child: CachedImage(
-                              imageUrl: productImageList[0].imageUrl!)),
+                              imageUrl: widget
+                                  .productImageList[selectedItem].imageUrl!)),
                       const Spacer(),
                       const Text('4.6', style: TextStyle(fontSize: 12)),
                       const SizedBox(
@@ -535,28 +569,36 @@ class GalleryWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 44),
                   child: ListView.builder(
                     itemBuilder: (context, index) {
-                      return Container(
-                        padding: const EdgeInsets.all(4),
-                        margin: const EdgeInsets.only(left: 20),
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(
-                            width: 1,
-                            color: ConstColor.grey,
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedItem = index;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          margin: const EdgeInsets.only(left: 20),
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            border: Border.all(
+                              width: 1,
+                              color: ConstColor.grey,
+                            ),
                           ),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: CachedImage(
+                                imageUrl:
+                                    widget.productImageList[index].imageUrl!,
+                                radius: 10,
+                              )),
                         ),
-                        child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: CachedImage(
-                              imageUrl: productImageList[index].imageUrl!,
-                              radius: 10,
-                            )),
                       );
                     },
-                    itemCount: productImageList.length,
+                    itemCount: widget.productImageList.length,
                     scrollDirection: Axis.horizontal,
                   ),
                 ),
@@ -718,6 +760,129 @@ class PriceTagButton extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+List<Widget> _buildColorVariantsOption(List<Variant> variantList) {
+  List<Widget> colorWidgets = [];
+  for (var colorVariant in variantList) {
+    String variantColor = "ff${colorVariant.value}";
+    int hexColor = int.parse(variantColor, radix: 16);
+    var item = Container(
+      margin: const EdgeInsets.only(left: 10),
+      width: 26,
+      height: 26,
+      decoration: BoxDecoration(
+        color: Color(hexColor),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+    );
+    colorWidgets.add(item);
+  }
+
+  return colorWidgets;
+}
+
+class ColorVariantList extends StatefulWidget {
+  List<Variant> variantList;
+  ColorVariantList({super.key, required this.variantList});
+
+  @override
+  State<ColorVariantList> createState() => _ColorVariantListState();
+}
+
+class _ColorVariantListState extends State<ColorVariantList> {
+  List<Widget> colorWidgets = [];
+  @override
+  void initState() {
+    for (var colorVariant in widget.variantList) {
+      String variantColor = "ff${colorVariant.value}";
+      int hexColor = int.parse(variantColor, radix: 16);
+      var item = Container(
+        margin: const EdgeInsets.only(left: 10),
+        width: 26,
+        height: 26,
+        decoration: BoxDecoration(
+          color: Color(hexColor),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+      );
+      colorWidgets.add(item);
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SizedBox(
+        height: 26,
+        width: 200,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: colorWidgets.length,
+          itemBuilder: ((context, index) {
+            return colorWidgets[index];
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+class StorageVariantList extends StatefulWidget {
+  List<Variant> storageVariantList;
+  StorageVariantList({
+    Key? key,
+    required this.storageVariantList,
+  }) : super(key: key);
+
+  @override
+  State<StorageVariantList> createState() => _StorageVariantListState();
+}
+
+class _StorageVariantListState extends State<StorageVariantList> {
+  List<Widget> storageWidgets = [];
+  @override
+  void initState() {
+    for (var storageVariant in widget.storageVariantList) {
+      var item = Container(
+        width: 74,
+        height: 26,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          child: Text(
+            storageVariant.value! ?? "128",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12),
+          ),
+        ),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            border: Border.all(width: 1, color: ConstColor.grey)),
+      );
+      storageWidgets.add(item);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SizedBox(
+        height: 26,
+        width: 200,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: storageWidgets.length ?? 2,
+          itemBuilder: ((context, index) {
+            return storageWidgets[index] ?? Text("yep it's null");
+          }),
+        ),
+      ),
     );
   }
 }

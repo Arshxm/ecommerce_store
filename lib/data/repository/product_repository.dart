@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_store/data/dataSource/product_datasource.dart';
 import 'package:ecommerce_store/di/di.dart';
-import 'package:ecommerce_store/model/category.dart';
+
 import 'package:ecommerce_store/model/product.dart';
 import 'package:ecommerce_store/util/api_exception.dart';
 
