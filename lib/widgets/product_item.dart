@@ -8,9 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/colors.dart';
 
 class ProductItem extends StatelessWidget {
-  Product productList;
+  Product product;
   ProductItem({
-    required this.productList,
+    required this.product,
     super.key,
   });
 
@@ -23,7 +23,7 @@ class ProductItem extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => BlocProvider(
               create: (context) => ProductBloc(),
-              child: ProductDetailsScreen(),
+              child: ProductDetailsScreen(product: product,),
             ),
           ),
         );
@@ -48,7 +48,7 @@ class ProductItem extends StatelessWidget {
                     width: 100,
                     height: 100,
                     child: CachedImage(
-                      imageUrl: productList.thumbnail,
+                      imageUrl: product.thumbnail,
                     )),
                 Container(),
                 Positioned(
@@ -71,7 +71,7 @@ class ProductItem extends StatelessWidget {
                           padding:
                               EdgeInsets.symmetric(vertical: 3, horizontal: 6),
                           child: Text(
-                            '${productList.persent!.round().toString()}%',
+                            '${product.persent!.round().toString()}%',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'RM',
@@ -88,7 +88,7 @@ class ProductItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '${productList.name}',
+                '${product.name}',
                 style: TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
                 maxLines: 1,
               ),
@@ -127,7 +127,7 @@ class ProductItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "${productList.realPrice}",
+                          "${product.realPrice}",
                           style: TextStyle(
                             fontFamily: 'RM',
                             fontSize: 12,
@@ -137,7 +137,7 @@ class ProductItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${productList.price}",
+                          "${product.price}",
                           style: TextStyle(
                             fontFamily: 'RM',
                             fontSize: 16,

@@ -122,7 +122,7 @@ class _getMostViewedProductList extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: ProductItem(
-                  productList: productList[index],
+                  product: productList[index],
                 ),
               );
             },
@@ -208,7 +208,7 @@ class _getBestSellerProductsList extends StatelessWidget {
               return Padding(
                 padding: EdgeInsets.only(left: 20),
                 child: ProductItem(
-                  productList: bestSellerProductList[index],
+                  product: bestSellerProductList[index],
                 ),
               );
             },

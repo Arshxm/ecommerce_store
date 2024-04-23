@@ -10,6 +10,7 @@ import 'package:ecommerce_store/bloc/product/product_state.dart';
 import 'package:ecommerce_store/constants/colors.dart';
 import 'package:ecommerce_store/data/repository/product_detail_repository.dart';
 import 'package:ecommerce_store/di/di.dart';
+import 'package:ecommerce_store/model/product.dart';
 import 'package:ecommerce_store/model/product_image.dart';
 import 'package:ecommerce_store/model/product_variant.dart';
 import 'package:ecommerce_store/model/variant.dart';
@@ -17,7 +18,11 @@ import 'package:ecommerce_store/model/variant_type.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({super.key});
+  Product product;
+  ProductDetailsScreen({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -26,7 +31,8 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
-    BlocProvider.of<ProductBloc>(context).add(ProductInitializeEvent());
+    BlocProvider.of<ProductBloc>(context)
+        .add(ProductInitializeEvent(productId: widget.product.id));
     super.initState();
   }
 
@@ -105,7 +111,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         child: Text(l),
                       );
                     }, (response) {
-                      return GalleryWidget(productImageList: response);
+                      return GalleryWidget(
+                          defaultProductThumbnail: widget.product.thumbnail,
+                          productImageList: response);
                     })
                   },
                   if (state is ProductDetailResponseState) ...{
@@ -509,10 +517,12 @@ class VariantGeneratorChild extends StatelessWidget {
 
 class GalleryWidget extends StatefulWidget {
   List<ProductImage> productImageList;
+  String defaultProductThumbnail;
 
   GalleryWidget({
     Key? key,
     required this.productImageList,
+    required this.defaultProductThumbnail,
   }) : super(key: key);
 
   @override
@@ -520,7 +530,7 @@ class GalleryWidget extends StatefulWidget {
 }
 
 class _GalleryWidgetState extends State<GalleryWidget> {
-  int selectedItem = 0;
+  int _selectedItem = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -549,10 +559,14 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                       ),
                       const Spacer(),
                       SizedBox(
-                          height: double.infinity,
-                          child: CachedImage(
-                              imageUrl: widget
-                                  .productImageList[selectedItem].imageUrl!)),
+                        height: 200,
+                        width: 200,
+                        child: CachedImage(
+                            imageUrl: (widget.productImageList.isEmpty)
+                                ? widget.defaultProductThumbnail!
+                                : widget
+                                    .productImageList[_selectedItem].imageUrl!),
+                      ),
                       const Spacer(),
                       const Text('4.6', style: TextStyle(fontSize: 12)),
                       const SizedBox(
@@ -563,49 +577,52 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 80,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 44),
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedItem = index;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          margin: const EdgeInsets.only(left: 20),
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(
-                              width: 1,
-                              color: ConstColor.grey,
+              if (widget.productImageList.isNotEmpty) ...{
+                SizedBox(
+                  height: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 44),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedItem = index;
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            margin: const EdgeInsets.only(left: 20),
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                width: 1,
+                                color: ConstColor.grey,
+                              ),
                             ),
+                            child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: CachedImage(
+                                  imageUrl:
+                                      widget.productImageList[index].imageUrl!,
+                                  radius: 10,
+                                )),
                           ),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: CachedImage(
-                                imageUrl:
-                                    widget.productImageList[index].imageUrl!,
-                                radius: 10,
-                              )),
-                        ),
-                      );
-                    },
-                    itemCount: widget.productImageList.length,
-                    scrollDirection: Axis.horizontal,
+                        );
+                      },
+                      itemCount: widget.productImageList.length,
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+                const SizedBox(
+                  height: 20,
+                ),
+              }
             ],
           ),
         ),
@@ -631,33 +648,21 @@ class AddToBasketButton extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(15))),
           ),
           Positioned(
-            child: GestureDetector(
-              onTap: () async {
-                IDetailProductRepository repository = locator.get();
-                var response = await repository.getProductImage();
-                response.fold((l) {
-                  print('Error $l');
-                }, (r) {
-                  r.forEach((element) {
-                    print(element.imageUrl);
-                  });
-                });
-              },
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: const SizedBox(
-                    height: 53,
-                    width: 160,
-                    child: Center(
-                        child: Text(
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: const SizedBox(
+                  height: 53,
+                  width: 160,
+                  child: Center(
+                    child: Text(
                       "افزودن سبد خربد",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                       ),
-                    )),
+                    ),
                   ),
                 ),
               ),

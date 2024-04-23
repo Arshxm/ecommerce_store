@@ -7,7 +7,7 @@ import 'package:ecommerce_store/model/variant_type.dart';
 import 'package:ecommerce_store/util/api_exception.dart';
 
 abstract class IDetailProductRepository{
-    Future<Either<String, List<ProductImage>>> getProductImage(); 
+    Future<Either<String, List<ProductImage>>> getProductImage(String productId); 
     Future<Either<String, List<VariantType>>> getVariantTypes(); 
     Future<Either<String, List<ProductVariant>>> getProductVariants(); 
 }
@@ -16,9 +16,9 @@ class DetailProductRepository extends IDetailProductRepository {
 
   final IDetailProductDatasource _datasource = locator.get();
   @override
-  Future<Either<String, List<ProductImage>>> getProductImage() async{
+  Future<Either<String, List<ProductImage>>> getProductImage(String productId) async{
       try {
-      var response = await _datasource.getGallery();
+      var response = await _datasource.getGallery(productId);
       return right(response);
     } on ApiException catch(e) {
       return left(e.message ?? "unknown Error");
