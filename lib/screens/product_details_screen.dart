@@ -59,6 +59,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     )
                   },
+
+                  //TODO Category Name of each item
+
                   if (state is ProductDetailResponseState) ...{
                     SliverToBoxAdapter(
                       child: Padding(
@@ -106,19 +109,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     )
                   },
-                  const SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        "آیفون 2022 Se",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+
+                  //TODO Name of each item
+
+                  if (state is ProductDetailResponseState) ...{
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          state.productName.fold((l) {
+                            return "Nothing to show";
+                          }, (product) {
+                            return "${product.name}";
+                          }),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  },
                   if (state is ProductDetailResponseState) ...{
                     state.productImages.fold((l) {
                       return SliverToBoxAdapter(

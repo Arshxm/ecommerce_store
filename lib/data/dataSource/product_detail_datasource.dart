@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/model/category.dart';
+import 'package:ecommerce_store/model/product.dart';
 import 'package:ecommerce_store/model/product_image.dart';
 import 'package:ecommerce_store/model/product_variant.dart';
 import 'package:ecommerce_store/model/variant.dart';
@@ -10,9 +11,10 @@ import 'package:ecommerce_store/util/api_exception.dart';
 abstract class IDetailProductDatasource {
   Future<List<ProductImage>> getGallery(String productId);
   Future<List<VariantType>> getVariantTypes();
-  Future<List<Variant>> getVariants();
-  Future<List<ProductVariant>> getProductVariants();
+  Future<List<Variant>> getVariants(String productId);
+  Future<List<ProductVariant>> getProductVariants(String productId);
   Future<Category> getProductCategories(String categoryId);
+  Future<Product> getProductName(String productId);
 }
 
 class DetailProductRemoteDatasource extends IDetailProductDatasource {
@@ -53,9 +55,9 @@ class DetailProductRemoteDatasource extends IDetailProductDatasource {
   }
 
   @override
-  Future<List<Variant>> getVariants() async {
+  Future<List<Variant>> getVariants(String productId) async {
     try {
-      Map<String, String> qParams = {'filter': 'product_id="at0y1gm0t65j62j"'};
+      Map<String, String> qParams = {'filter': 'product_id="$productId"'};
       var response = await _dio.get('collections/variants/records',
           queryParameters: qParams);
       return response.data['items']
@@ -70,9 +72,9 @@ class DetailProductRemoteDatasource extends IDetailProductDatasource {
   }
 
   @override
-  Future<List<ProductVariant>> getProductVariants() async {
+  Future<List<ProductVariant>> getProductVariants(String productId) async {
     var variantTypeList = await getVariantTypes();
-    var variantList = await getVariants();
+    var variantList = await getVariants(productId);
 
     List<ProductVariant> productVariantList = [];
 
@@ -102,6 +104,23 @@ class DetailProductRemoteDatasource extends IDetailProductDatasource {
         queryParameters: qParams,
       );
       return Category.fromMapJson(response.data['items'][0]);
+    } on DioException catch (ex) {
+      throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
+    } catch (ex) {
+      print(ex.toString());
+      throw ApiException(0, "unknown error");
+    }
+  }
+  
+  @override
+  Future<Product> getProductName(String productId) async {
+    try {
+      Map<String, String> qParams = {'filter': 'id = "$productId"'};
+      var response = await _dio.get(
+        'collections/products/records',
+        queryParameters: qParams,
+      );
+      return Product.fromJson(response.data['items'][0]);
     } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
     } catch (ex) {
