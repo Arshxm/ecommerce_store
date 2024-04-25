@@ -1,4 +1,6 @@
 {
     "workbench.tree.enableStickyScroll": true,
-    "editor.stickyScroll.scrollWithEditor": true
+    "editor.stickyScroll.scrollWithEditor": true,
+    "vscode-pets.theme": "forest",
+    "vscode-pets.position": "explorer"
 }

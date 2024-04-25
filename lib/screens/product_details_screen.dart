@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
+import 'package:ecommerce_store/model/category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,8 +32,8 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
-    BlocProvider.of<ProductBloc>(context)
-        .add(ProductInitializeEvent(productId: widget.product.id));
+    BlocProvider.of<ProductBloc>(context).add(ProductInitializeEvent(
+        productId: widget.product.id, categoryId: widget.product.categoryId));
     super.initState();
   }
 
@@ -58,40 +59,53 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     )
                   },
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 44, right: 44, bottom: 20),
-                      child: Container(
-                        height: 46,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          color: Colors.white,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            Image.asset('assets/images/icon_back.png'),
-                            const Expanded(
-                              child: Text(
-                                "آیفون",
-                                style: TextStyle(
-                                    color: ConstColor.blue, fontSize: 16),
-                                textAlign: TextAlign.center,
+                  if (state is ProductDetailResponseState) ...{
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 44, right: 44, bottom: 20),
+                        child: Container(
+                          height: 46,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: Colors.white,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                width: 16,
                               ),
-                            ),
-                            Image.asset('assets/images/icon_apple_blue.png'),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                          ],
+                              Image.asset('assets/images/icon_back.png'),
+                              Expanded(
+                                  child: state.productCategory.fold(
+                                (l) {
+                                  return const Text(
+                                    "error text",
+                                    style: TextStyle(
+                                        color: ConstColor.blue, fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  );
+                                },
+                                (productCategory) {
+                                  return Text(
+                                    "${productCategory.title}",
+                                    style: const TextStyle(
+                                        color: ConstColor.blue, fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  );
+                                },
+                              )),
+                              Image.asset('assets/images/icon_apple_blue.png'),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    )
+                  },
                   const SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.only(bottom: 20),
@@ -130,6 +144,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       },
                     )
                   },
+
+                  //TODO Storage Boxes
+
                   // SliverToBoxAdapter(
                   //   child: Padding(
                   //     padding: const EdgeInsets.only(
@@ -219,7 +236,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   //   ),
                   // ),
 
-                  //Technical details
+                  //TODO Technical details
 
                   SliverToBoxAdapter(
                     child: Container(

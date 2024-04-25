@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ecommerce_store/di/di.dart';
+import 'package:ecommerce_store/model/category.dart';
 import 'package:ecommerce_store/model/product_image.dart';
 import 'package:ecommerce_store/model/product_variant.dart';
 import 'package:ecommerce_store/model/variant.dart';
@@ -11,6 +12,7 @@ abstract class IDetailProductDatasource {
   Future<List<VariantType>> getVariantTypes();
   Future<List<Variant>> getVariants();
   Future<List<ProductVariant>> getProductVariants();
+  Future<Category> getProductCategories(String categoryId);
 }
 
 class DetailProductRemoteDatasource extends IDetailProductDatasource {
@@ -54,10 +56,8 @@ class DetailProductRemoteDatasource extends IDetailProductDatasource {
   Future<List<Variant>> getVariants() async {
     try {
       Map<String, String> qParams = {'filter': 'product_id="at0y1gm0t65j62j"'};
-      var response = await _dio.get(
-        'collections/variants/records',
-        queryParameters: qParams
-      );
+      var response = await _dio.get('collections/variants/records',
+          queryParameters: qParams);
       return response.data['items']
           .map<Variant>((jsonObject) => Variant.fromjson(jsonObject))
           .toList();
@@ -76,13 +76,37 @@ class DetailProductRemoteDatasource extends IDetailProductDatasource {
 
     List<ProductVariant> productVariantList = [];
 
-    for (var variantType in variantTypeList) {
-      var variantListId = variantList
-          .where((element) => element.typeId == variantType.id)
-          .toList();
-      productVariantList.add(
-          ProductVariant(variantType: variantType, variantList: variantList));
+    try {
+      for (var variantType in variantTypeList) {
+        var variantListId = variantList
+            .where((element) => element.typeId == variantType.id)
+            .toList();
+        productVariantList.add(
+            ProductVariant(variantType: variantType, variantList: variantList));
+      }
+      return productVariantList;
+    } on DioException catch (ex) {
+      throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
+    } catch (ex) {
+      print(ex.toString());
+      throw ApiException(0, "unknown error");
     }
-    return productVariantList;
+  }
+
+  @override
+  Future<Category> getProductCategories(String categoryId) async {
+    try {
+      Map<String, String> qParams = {'filter': 'id = "$categoryId"'};
+      var response = await _dio.get(
+        'collections/category/records',
+        queryParameters: qParams,
+      );
+      return Category.fromMapJson(response.data['items'][0]);
+    } on DioException catch (ex) {
+      throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
+    } catch (ex) {
+      print(ex.toString());
+      throw ApiException(0, "unknown error");
+    }
   }
 }
