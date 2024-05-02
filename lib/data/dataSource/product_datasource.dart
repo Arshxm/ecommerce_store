@@ -16,7 +16,7 @@ class ProductRemoteDatasource extends IProductDatasource {
     try {
       var response = await _dio.get('collections/products/records');
       return response.data['items']
-          .map<Product>((jsonObject) => Product.fromJson(jsonObject))
+          .map<Product>((jsonObject) => Product.fromMapJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
@@ -34,7 +34,7 @@ class ProductRemoteDatasource extends IProductDatasource {
       };
       var response = await _dio.get('collections/products/records', queryParameters: qParams);
       return response.data['items']
-          .map<Product>((jsonObject) => Product.fromJson(jsonObject))
+          .map<Product>((jsonObject) => Product.fromMapJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
@@ -52,7 +52,7 @@ class ProductRemoteDatasource extends IProductDatasource {
       };
       var response = await _dio.get('collections/products/records', queryParameters: qParams);
       return response.data['items']
-          .map<Product>((jsonObject) => Product.fromJson(jsonObject))
+          .map<Product>((jsonObject) => Product.fromMapJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode, ex.response?.data['message']);

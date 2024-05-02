@@ -1,6 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
+import 'package:ecommerce_store/model/product_image.dart';
+import 'package:ecommerce_store/model/product_variant.dart';
+import 'package:ecommerce_store/model/variant.dart';
+import 'package:ecommerce_store/model/variant_type.dart';
+import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,21 +15,16 @@ import 'package:ecommerce_store/bloc/product/product_bloc.dart';
 import 'package:ecommerce_store/bloc/product/product_event.dart';
 import 'package:ecommerce_store/bloc/product/product_state.dart';
 import 'package:ecommerce_store/constants/colors.dart';
-import 'package:ecommerce_store/data/repository/product_detail_repository.dart';
-import 'package:ecommerce_store/di/di.dart';
-import 'package:ecommerce_store/model/category.dart';
 import 'package:ecommerce_store/model/product.dart';
-import 'package:ecommerce_store/model/product_image.dart';
-import 'package:ecommerce_store/model/product_variant.dart';
-import 'package:ecommerce_store/model/variant.dart';
-import 'package:ecommerce_store/model/variant_type.dart';
-import 'package:ecommerce_store/widgets/cached_image.dart';
+import 'package:ecommerce_store/model/property.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   Product product;
+  Property? property;
   ProductDetailsScreen({
     Key? key,
     required this.product,
+    this.property,
   }) : super(key: key);
 
   @override
@@ -251,49 +251,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   // ),
 
                   //TODO Technical details
-
-                  SliverToBoxAdapter(
-                    child: Container(
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            "مشخصات فنی :",
-                          ),
-                          const Spacer(),
-                          const Text(
-                            "مشاهده",
-                            style:
-                                TextStyle(fontSize: 12, color: ConstColor.blue),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Image.asset(
-                            "assets/images/icon_left_category.png",
-                            width: 20,
-                            height: 20,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      margin:
-                          const EdgeInsets.only(left: 44, right: 44, top: 24),
-                      height: 46,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            width: 1,
-                            color: ConstColor.grey,
-                          ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15))),
-                    ),
-                  ),
+                  if (state is ProductDetailResponseState) ...{
+                    state.productProperty.fold((l) {
+                      return const SliverToBoxAdapter(
+                        child: Text("coudn't load anything it is empty"),
+                      );
+                    }, (response) {
+                      return ProductProperties(propertyList: response);
+                    })
+                  },
 
                   //TODO About Product
 
@@ -441,6 +407,97 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 }
 
+class ProductProperties extends StatefulWidget {
+  List<Property> propertyList;
+
+  ProductProperties({
+    Key? key,
+    required this.propertyList,
+  }) : super(key: key);
+
+  @override
+  State<ProductProperties> createState() => _ProductPropertiesState();
+}
+
+class _ProductPropertiesState extends State<ProductProperties> {
+  bool _isVisible = false;
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isVisible = !_isVisible;
+              });
+            },
+            child: Container(
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Text(
+                    "مشخصات فنی :",
+                  ),
+                  const Spacer(),
+                  const Text(
+                    "مشاهده",
+                    style: TextStyle(fontSize: 12, color: ConstColor.blue),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Image.asset(
+                    "assets/images/icon_left_category.png",
+                    width: 20,
+                    height: 20,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+              margin: const EdgeInsets.only(left: 44, right: 44, top: 24),
+              height: 46,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 1,
+                    color: ConstColor.grey,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(15))),
+            ),
+          ),
+          Visibility(
+            visible: _isVisible,
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  var property = widget.propertyList[index];
+                  return Text("${property.title} : ${property.value} ");
+                },
+                itemCount: widget.propertyList.length,
+              ),
+              margin: const EdgeInsets.only(left: 44, right: 44, top: 24),
+              height: 46,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 1,
+                    color: ConstColor.grey,
+                  ),
+                  borderRadius: const BorderRadius.all(Radius.circular(15))),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class ProductDescription extends StatefulWidget {
   String productDescription;
   ProductDescription({
@@ -453,7 +510,7 @@ class ProductDescription extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDescription> {
-  bool _isVisible = false;  
+  bool _isVisible = false;
 
   @override
   Widget build(BuildContext context) {

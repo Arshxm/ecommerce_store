@@ -27,7 +27,7 @@ class Product {
     persent = ((price - realPrice!) / price) * 100;
   }
 
-  factory Product.fromJson(Map<String, dynamic> jsonObject) {
+  factory Product.fromMapJson(Map<String, dynamic> jsonObject) {
     return Product(
       jsonObject['id'],
       jsonObject['collectionId'],
