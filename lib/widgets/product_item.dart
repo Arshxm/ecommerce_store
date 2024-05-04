@@ -71,8 +71,8 @@ class ProductItem extends StatelessWidget {
                           padding:
                               EdgeInsets.symmetric(vertical: 3, horizontal: 6),
                           child: Text(
-                            '${product.persent!.round().toString()}%',
-                            style: TextStyle(
+                            '${product.percent!.round().toString()}%',
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'RM',
                                 fontSize: 12),
@@ -88,8 +88,8 @@ class ProductItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '${product.name}',
-                style: TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
+                product.name,
+                style: const TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
                 maxLines: 1,
               ),
             ),
@@ -128,7 +128,7 @@ class ProductItem extends StatelessWidget {
                       children: [
                         Text(
                           "${product.realPrice}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'RM',
                             fontSize: 12,
                             color: Colors.white,
@@ -138,7 +138,7 @@ class ProductItem extends StatelessWidget {
                         ),
                         Text(
                           "${product.price}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'RM',
                             fontSize: 16,
                             color: Colors.white,

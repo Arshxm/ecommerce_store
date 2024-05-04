@@ -25,14 +25,13 @@ class ProductRemoteDatasource extends IProductDatasource {
       throw ApiException(0, "unknown error");
     }
   }
-  
+
   @override
   Future<List<Product>> getBestSeller() async {
     try {
-      Map<String, String> qParams = {
-        'filter':'popularity = "Best Seller"'
-      };
-      var response = await _dio.get('collections/products/records', queryParameters: qParams);
+      Map<String, String> qParams = {'filter': 'popularity = "Best Seller"'};
+      var response = await _dio.get('collections/products/records',
+          queryParameters: qParams);
       return response.data['items']
           .map<Product>((jsonObject) => Product.fromMapJson(jsonObject))
           .toList();
@@ -43,14 +42,13 @@ class ProductRemoteDatasource extends IProductDatasource {
       throw ApiException(0, "unknown error");
     }
   }
-  
+
   @override
   Future<List<Product>> getHottest() async {
     try {
-      Map<String, String> qParams = {
-        'filter':'popularity = "Hotest"'
-      };
-      var response = await _dio.get('collections/products/records', queryParameters: qParams);
+      Map<String, String> qParams = {'filter': 'popularity = "Hotest"'};
+      var response = await _dio.get('collections/products/records',
+          queryParameters: qParams);
       return response.data['items']
           .map<Product>((jsonObject) => Product.fromMapJson(jsonObject))
           .toList();
@@ -61,4 +59,5 @@ class ProductRemoteDatasource extends IProductDatasource {
       throw ApiException(0, "unknown error");
     }
   }
+
 }

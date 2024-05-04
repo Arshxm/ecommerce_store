@@ -182,6 +182,7 @@ class _getCategoryList extends StatelessWidget {
         height: 100,
         child: CategoryListViewBuilder(
           categoryList: categoryList,
+
         ),
       ),
     );
