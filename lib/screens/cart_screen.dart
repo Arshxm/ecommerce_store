@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dotted_line/dotted_line.dart';
-import 'package:ecommerce_store/constants/colors.dart';
 import 'package:flutter/material.dart';
+
+import 'package:ecommerce_store/constants/colors.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -49,10 +51,10 @@ class CartScreen extends StatelessWidget {
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
-                    return CartItem();
+                    return const CartItem();
                   }, childCount: 10),
                 ),
-                SliverPadding(padding: EdgeInsets.only(bottom: 60))
+                const SliverPadding(padding: EdgeInsets.only(bottom: 60))
               ],
             ),
             Padding(
@@ -64,7 +66,8 @@ class CartScreen extends StatelessWidget {
                   onPressed: () {},
                   child: const Text("Purchase"),
                   style: ElevatedButton.styleFrom(
-                    textStyle: TextStyle(fontSize: 18, fontFamily: "RM"),
+                      textStyle:
+                          const TextStyle(fontSize: 18, fontFamily: "RM"),
                       backgroundColor: ConstColor.green,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15))),
@@ -104,9 +107,25 @@ class CartItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text("1"),
-                        const Text("1"),
+                        const Text(
+                          "آیفون 13 پرو مکس",
+                          style: TextStyle(fontFamily: 'SB'),
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        const Text(
+                          "گارانتی فیلان 18 ماهه",
+                          style: TextStyle(
+                            fontFamily: 'SM',
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
                               width: 30,
@@ -122,23 +141,47 @@ class CartItem extends StatelessWidget {
                                     padding: EdgeInsets.symmetric(
                                         vertical: 3, horizontal: 6),
                                     child: Text(
-                                      '3%',
+                                      '%3',
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'RM',
-                                          fontSize: 12),
+                                          color: Colors.white, fontSize: 12),
                                     ),
                                   )
                                 ],
                               ),
                             ),
-                            const Text("49,000,000"),
-                            const Text("Toman"),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            const Text(
+                              "تومان",
+                              style: TextStyle(
+                                fontFamily: 'SM',
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            const Text(
+                              "49,000,000",
+                              style: TextStyle(
+                                fontFamily: 'SM',
+                                fontSize: 12,
+                              ),
+                            ),
                           ],
                         ),
-                        const Wrap(
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Wrap(
+                          spacing: 8,
                           children: [
-                            OptionChip(),
+                            const DeleteChip(),
+                            OptionChip(
+                              title: "آبی",
+                              color: "34abeb",
+                            ),
                           ],
                         )
                       ],
@@ -167,11 +210,17 @@ class CartItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("49,000,000"),
+                Text(
+                  "تومان",
+                  style: TextStyle(fontFamily: "SB", fontSize: 16),
+                ),
                 SizedBox(
                   width: 5,
                 ),
-                Text("Toman"),
+                Text(
+                  "49,000,000",
+                  style: TextStyle(fontFamily: "SB", fontSize: 16),
+                ),
               ],
             ),
           ),
@@ -181,8 +230,9 @@ class CartItem extends StatelessWidget {
   }
 }
 
-class OptionChip extends StatelessWidget {
-  const OptionChip({
+//TODO Delete Chip in cart screen
+class DeleteChip extends StatelessWidget {
+  const DeleteChip({
     super.key,
   });
 
@@ -197,8 +247,70 @@ class OptionChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("1"),
-            Image.asset('assets/images/icon_options.png')
+            const SizedBox(
+              width: 10,
+            ),
+            const Text(
+              "حذف",
+              style: TextStyle(fontFamily: 'SM', fontSize: 12),
+              textDirection: TextDirection.rtl,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Image.asset('assets/images/icon_trash.png')
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//TODO Chip in cart screen
+class OptionChip extends StatelessWidget {
+  String? color;
+  String title;
+  OptionChip({
+    Key? key,
+    this.color,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String chipColor = "ff$color";
+    int hexColor = int.parse(chipColor, radix: 16);
+
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          border: Border.all(width: 1, color: ConstColor.grey)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (color != null) ...{
+              Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(
+                    hexColor,
+                  ),
+                ),
+              )
+            },
+            const SizedBox(
+              width: 8,
+            ),
+            Text(
+              title,
+              style: const TextStyle(fontFamily: 'SM', fontSize: 12),
+              textDirection: TextDirection.rtl,
+            ),
+            // Image.asset('assets/images/icon_options.png')
           ],
         ),
       ),

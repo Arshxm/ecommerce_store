@@ -117,10 +117,11 @@ class _ProductsByCategoryScreenState extends State<ProductsByCategoryScreen> {
                           ),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 2 / 2.8,
-                                  mainAxisSpacing: 30,
-                                  crossAxisSpacing: 30),
+                            crossAxisCount: 2,
+                            childAspectRatio: 2 / 2.8,
+                            mainAxisSpacing: 30,
+                            crossAxisSpacing: 30,
+                          ),
                         ),
                       );
                     },
