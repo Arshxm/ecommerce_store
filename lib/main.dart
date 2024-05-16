@@ -148,7 +148,7 @@ class _MyAppState extends State<MyApp> {
                         ),
                       ),
                     ),
-                    label: "home"),
+                    label: "Home"),
               ],
             ),
           ),

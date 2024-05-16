@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dotted_line/dotted_line.dart';
+import 'package:ecommerce_store/util/extensions/String_Extensions.dart';
 import 'package:flutter/material.dart';
-
+import '';
 import 'package:ecommerce_store/constants/colors.dart';
 
 class CartScreen extends StatelessWidget {
@@ -278,9 +279,6 @@ class OptionChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String chipColor = "ff$color";
-    int hexColor = int.parse(chipColor, radix: 16);
-
     return Container(
       decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -296,9 +294,7 @@ class OptionChip extends StatelessWidget {
                 height: 12,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(
-                    hexColor,
-                  ),
+                  color: color!.colorParse(),
                 ),
               )
             },
@@ -317,3 +313,4 @@ class OptionChip extends StatelessWidget {
     );
   }
 }
+
