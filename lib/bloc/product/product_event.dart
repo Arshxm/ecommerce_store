@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-abstract class ProductEvent{
+import 'package:ecommerce_store/model/product.dart';
 
-}
+abstract class ProductEvent {}
 
 class ProductInitializeEvent extends ProductEvent {
   String productId;
@@ -10,5 +10,11 @@ class ProductInitializeEvent extends ProductEvent {
     required this.productId,
     required this.categoryId,
   });
+}
 
+class ProductAddToBasket extends ProductEvent{
+  Product product;
+  ProductAddToBasket(
+    this.product,
+  );
 }

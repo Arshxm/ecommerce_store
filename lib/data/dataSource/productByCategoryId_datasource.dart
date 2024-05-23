@@ -7,7 +7,7 @@ abstract class IProductByCategoryIdDatasource {
   Future<List<Product>> getProductByCategoryId(String categoryId);
 }
 
-class ProductByCategoryIdDatasource extends IProductByCategoryIdDatasource {
+class ProductByCategoryIdRemoteDatasource extends IProductByCategoryIdDatasource {
   final Dio _dio = locator.get();
 
   @override
