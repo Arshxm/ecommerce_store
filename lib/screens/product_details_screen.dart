@@ -1,22 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
-import 'package:ecommerce_store/model/product_image.dart';
-import 'package:ecommerce_store/model/product_variant.dart';
-import 'package:ecommerce_store/model/variant.dart';
-import 'package:ecommerce_store/model/variant_type.dart';
-import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:ecommerce_store/bloc/product/product_bloc.dart';
 import 'package:ecommerce_store/bloc/product/product_event.dart';
 import 'package:ecommerce_store/bloc/product/product_state.dart';
 import 'package:ecommerce_store/constants/colors.dart';
+import 'package:ecommerce_store/model/cart_item.dart';
 import 'package:ecommerce_store/model/product.dart';
+import 'package:ecommerce_store/model/product_image.dart';
+import 'package:ecommerce_store/model/product_variant.dart';
 import 'package:ecommerce_store/model/property.dart';
+import 'package:ecommerce_store/model/variant.dart';
+import 'package:ecommerce_store/model/variant_type.dart';
+import 'package:ecommerce_store/widgets/cached_image.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   Product product;
@@ -388,12 +390,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                   //Buttons and price
 
-                  const SliverToBoxAdapter(
+                  SliverToBoxAdapter(
                     child: Padding(
-                      padding: EdgeInsets.only(top: 20, right: 44, left: 44),
+                      padding:
+                          const EdgeInsets.only(top: 20, right: 44, left: 44),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [AddToBasketButton(), PriceTagButton()],
+                        children: [
+                          AddToBasketButton(product: widget.product),
+                          const PriceTagButton()
+                        ],
                       ),
                     ),
                   )
@@ -768,11 +774,30 @@ class _GalleryWidgetState extends State<GalleryWidget> {
 }
 
 class AddToBasketButton extends StatelessWidget {
-  const AddToBasketButton({super.key});
+  Product product;
+  AddToBasketButton({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        var item = BasketItem(
+          product.id,
+          product.collectionId,
+          product.thumbnail,
+          product.discountPrice,
+          product.price,
+          product.name,
+          product.categoryId,
+        );
+        var box = Hive.box<BasketItem>('CartBox');
+        box.add(
+          item
+        );
+      },
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [

@@ -1,15 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dotted_line/dotted_line.dart';
-import 'package:ecommerce_store/util/extensions/String_Extensions.dart';
+import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
-import '';
+
 import 'package:ecommerce_store/constants/colors.dart';
+import 'package:ecommerce_store/model/cart_item.dart';
+import 'package:ecommerce_store/util/extensions/String_Extensions.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box<BasketItem>('CartBox');
     return Scaffold(
       backgroundColor: ConstColor.backgroundScreenColor,
       body: SafeArea(
@@ -52,8 +58,8 @@ class CartScreen extends StatelessWidget {
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate((context, index) {
-                    return const CartItem();
-                  }, childCount: 10),
+                    return CartItem(cartItem: box.values.toList()[index]);
+                  }, childCount: box.length),
                 ),
                 const SliverPadding(padding: EdgeInsets.only(bottom: 60))
               ],
@@ -83,9 +89,11 @@ class CartScreen extends StatelessWidget {
 }
 
 class CartItem extends StatelessWidget {
-  const CartItem({
-    super.key,
-  });
+  BasketItem cartItem;
+  CartItem({
+    Key? key,
+    required this.cartItem,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +116,8 @@ class CartItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
-                          "آیفون 13 پرو مکس",
+                        Text(
+                          cartItem.name,
                           style: TextStyle(fontFamily: 'SB'),
                         ),
                         const SizedBox(
@@ -191,7 +199,13 @@ class CartItem extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset('assets/images/iphone.png'),
+                  child: SizedBox(
+                    height: 104,
+                    width: 75,
+                    child: CachedImage(
+                      imageUrl: cartItem.thumbnail,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -313,4 +327,3 @@ class OptionChip extends StatelessWidget {
     );
   }
 }
-
