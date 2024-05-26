@@ -1,4 +1,6 @@
+import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce_store/bloc/product/product_bloc.dart';
+import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/model/product.dart';
 import 'package:ecommerce_store/screens/product_details_screen.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
@@ -21,8 +23,8 @@ class ProductItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => BlocProvider(
-              create: (context) => ProductBloc(),
+            builder: (context) => BlocProvider<BasketBloc>.value(
+              value: locator.get<BasketBloc>(),
               child: ProductDetailsScreen(product: product,),
             ),
           ),

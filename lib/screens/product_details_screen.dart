@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
+import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
+import 'package:ecommerce_store/bloc/basket/basket_event.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -35,11 +37,31 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
-  void initState() {
-    BlocProvider.of<ProductBloc>(context).add(ProductInitializeEvent(
-        productId: widget.product.id, categoryId: widget.product.categoryId));
-    super.initState();
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        var bloc = ProductBloc();
+        bloc.add(
+          ProductInitializeEvent(
+            productId: widget.product.id,
+            categoryId: widget.product.categoryId,
+          ),
+        );
+        return bloc;
+      },
+      child: DetailContentWidget(parentWidget: widget),
+    );
   }
+}
+
+class DetailContentWidget extends StatelessWidget {
+  const DetailContentWidget({
+    super.key,
+    required this.parentWidget,
+  });
+
+  final ProductDetailsScreen parentWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +164,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       );
                     }, (response) {
                       return GalleryWidget(
-                          defaultProductThumbnail: widget.product.thumbnail,
+                          defaultProductThumbnail:
+                              parentWidget.product.thumbnail,
                           productImageList: response);
                     })
                   },
@@ -266,7 +289,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   //TODO About Product
 
                   ProductDescription(
-                    productDescription: widget.product.description,
+                    productDescription: parentWidget.product.description,
                   ),
 
                   //TODO Reviews
@@ -397,7 +420,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AddToBasketButton(product: widget.product),
+                          AddToBasketButton(product: parentWidget.product),
                           const PriceTagButton()
                         ],
                       ),
@@ -784,9 +807,8 @@ class AddToBasketButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-
         context.read<ProductBloc>().add(ProductAddToBasket(product));
-        
+        context.read<BasketBloc>().add(BasketFetchFromHiveEvent());
       },
       child: Stack(
         alignment: Alignment.bottomCenter,

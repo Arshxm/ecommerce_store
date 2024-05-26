@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce_store/data/dataSource/authentication_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/banner_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/basket_datasource.dart';
@@ -67,5 +68,10 @@ Future<void> getItInit() async{
 
   locator.registerFactory<IProductByCategoryIdRepository>(() => ProductByCategoryIdRepository()); 
 
-  locator.registerFactory<IBasketRepository>(() => BasketRepository()); 
+  locator.registerFactory<IBasketRepository>(() => BasketRepository());
+
+
+
+  //BLoC
+  locator.registerSingleton<BasketBloc>(BasketBloc());
 }
