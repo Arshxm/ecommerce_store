@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
+import 'package:ecommerce_store/bloc/basket/basket_event.dart';
 import 'package:ecommerce_store/bloc/category/category_bloc.dart';
 import 'package:ecommerce_store/bloc/home/home_bloc.dart';
 import 'package:ecommerce_store/constants/colors.dart';
@@ -38,9 +40,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       scrollBehavior: MyBehavior(),
-      theme: ThemeData(
-        fontFamily: "SB"
-      ),
+      theme: ThemeData(fontFamily: "SB"),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body:
@@ -167,7 +167,14 @@ class _MyAppState extends State<MyApp> {
   List<Widget> botNavigation() {
     return <Widget>[
       const ProfileScreen(),
-      const CartScreen(),
+      BlocProvider(
+        create: (context) {
+          var bloc = BasketBloc();
+          bloc.add(BasketFetchFromHiveEvent());
+          return bloc;
+        },
+        child: CartScreen(),
+      ),
       BlocProvider(
         create: (context) => CategoryBloc(),
         child: CategoryScreen(),

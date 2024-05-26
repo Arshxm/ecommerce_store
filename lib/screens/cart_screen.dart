@@ -1,17 +1,28 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dotted_line/dotted_line.dart';
+import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
+import 'package:ecommerce_store/bloc/basket/basket_state.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce_store/constants/colors.dart';
 import 'package:ecommerce_store/model/cart_item.dart';
 import 'package:ecommerce_store/util/extensions/String_Extensions.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -19,69 +30,84 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: ConstColor.backgroundScreenColor,
       body: SafeArea(
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 44, right: 44, bottom: 32),
-                    child: Container(
-                      height: 46,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: Colors.white,
-                      ),
+        child: BlocBuilder<BasketBloc, BasketState>(
+          builder: (context, state) {
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/images/icon_apple_blue.png'),
-                            const Expanded(
-                              child: Text(
-                                "Shopping Cart",
-                                style: TextStyle(
-                                    color: ConstColor.blue,
-                                    fontFamily: 'RB',
-                                    fontSize: 16),
-                                textAlign: TextAlign.center,
-                              ),
+                        padding: const EdgeInsets.only(
+                            left: 44, right: 44, bottom: 32),
+                        child: Container(
+                          height: 46,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                    'assets/images/icon_apple_blue.png'),
+                                const Expanded(
+                                  child: Text(
+                                    "Shopping Cart",
+                                    style: TextStyle(
+                                        color: ConstColor.blue,
+                                        fontFamily: 'RB',
+                                        fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
+                    if (state is BasketResponseState) ...{
+                      state.basketItemList.fold((l) {
+                        return const SliverToBoxAdapter(
+                          child: Text("Noting to show TBH"),
+                        );
+                      }, (BasketList) {
+                        return SliverList(
+                          delegate:
+                              SliverChildBuilderDelegate((context, index) {
+                            return CartItem(cartItem: BasketList[index]);
+                          }, childCount: BasketList.length),
+                        );
+                      })
+                    },
+                    const SliverPadding(padding: EdgeInsets.only(bottom: 60))
+                  ],
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 20, left: 44, right: 44),
+                  child: SizedBox(
+                    height: 53,
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("Purchase"),
+                      style: ElevatedButton.styleFrom(
+                          textStyle:
+                              const TextStyle(fontSize: 18, fontFamily: "RM"),
+                          backgroundColor: ConstColor.green,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15))),
+                    ),
                   ),
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    return CartItem(cartItem: box.values.toList()[index]);
-                  }, childCount: box.length),
-                ),
-                const SliverPadding(padding: EdgeInsets.only(bottom: 60))
               ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20, left: 44, right: 44),
-              child: SizedBox(
-                height: 53,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("Purchase"),
-                  style: ElevatedButton.styleFrom(
-                      textStyle:
-                          const TextStyle(fontSize: 18, fontFamily: "RM"),
-                      backgroundColor: ConstColor.green,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15))),
-                ),
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

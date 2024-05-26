@@ -7,6 +7,7 @@ import 'package:ecommerce_store/util/api_exception.dart';
 
 abstract class IBasketRepository {
   Future<Either<String,String>> addProductToBasket(BasketItem basketItem);
+  Future<Either<String,List<BasketItem>>> getAllBasketItems();
  }
 
 class BasketRepository extends IBasketRepository {
@@ -20,6 +21,16 @@ class BasketRepository extends IBasketRepository {
       return right("Data Has been added to Cart");
     } catch(e) {
       return left("Error!");
+    }
+  }
+  
+  @override
+  Future<Either<String, List<BasketItem>>> getAllBasketItems() async {
+    try {
+      var basketItemList = await _dataSource.getAllBasketItems();
+      return right(basketItemList);
+    } catch (e) {
+      return left("Error, can't show basket Items!");
     }
   }
 
