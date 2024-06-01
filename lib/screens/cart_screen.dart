@@ -3,6 +3,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce_store/bloc/basket/basket_state.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
+import 'package:ecommerce_store/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce_store/constants/colors.dart';
@@ -10,6 +11,7 @@ import 'package:ecommerce_store/model/cart_item.dart';
 import 'package:ecommerce_store/util/extensions/String_Extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:zarinpal/zarinpal.dart';
 
 import '';
 
@@ -21,11 +23,22 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  @override
-  void initState() {}
+  PaymentRequest _paymentRequest = PaymentRequest();
 
   @override
+  void initState() {
+
+    super.initState();
+
+    _paymentRequest.setIsSandBox(true);
+    _paymentRequest.setAmount(1000);
+    _paymentRequest.setDescription("this is a test for apple shop application");
+    _paymentRequest.setCallbackURL('expertflutter://shop');
+
+  }
+  @override
   Widget build(BuildContext context) {
+    var basketTotalPrice;
     var box = Hive.box<BasketItem>('CartBox');
     return Scaffold(
       backgroundColor: ConstColor.backgroundScreenColor,
@@ -59,7 +72,7 @@ class _CartScreenState extends State<CartScreen> {
                                     "Shopping Cart",
                                     style: TextStyle(
                                         color: ConstColor.blue,
-                                        fontFamily: 'RB',
+                                        fontFamily: 'SB',
                                         fontSize: 16),
                                     textAlign: TextAlign.center,
                                   ),
@@ -87,185 +100,42 @@ class _CartScreenState extends State<CartScreen> {
                     const SliverPadding(padding: EdgeInsets.only(bottom: 60))
                   ],
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(bottom: 20, left: 44, right: 44),
-                  child: SizedBox(
-                    height: 53,
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text("Purchase"),
-                      style: ElevatedButton.styleFrom(
-                          textStyle:
-                              const TextStyle(fontSize: 18, fontFamily: "RM"),
-                          backgroundColor: ConstColor.green,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15))),
-                    ),
-                  ),
-                ),
+                if (state is BasketResponseState) ...{
+                  state.totalPrice.fold((l) {
+                    return const Text('Something Bad happened!');
+                  }, (totalPrice) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 20, left: 44, right: 44),
+                      child: SizedBox(
+                        height: 53,
+                        width: MediaQuery.of(context).size.width,
+                        child: ElevatedButton(
+                          onPressed: () {
+
+                          },
+                          child: Text(
+                            (totalPrice == 0)
+                                ? "سبد شما خالی است "
+                                : "$totalPrice",
+                            style: const TextStyle(
+                                fontFamily: "SM", color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(
+                                  fontSize: 18, fontFamily: "SM"),
+                              backgroundColor: ConstColor.green,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15))),
+                        ),
+                      ),
+                    );
+                  })
+                }
               ],
             );
           },
         ),
-      ),
-    );
-  }
-}
-
-class CartItem extends StatelessWidget {
-  BasketItem cartItem;
-  CartItem({
-    Key? key,
-    required this.cartItem,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 249,
-      margin: const EdgeInsets.only(right: 44, left: 44, bottom: 44),
-      width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          color: Colors.white),
-      child: Column(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          cartItem.name,
-                          style: TextStyle(fontFamily: 'SB'),
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        const Text(
-                          "گارانتی فیلان 18 ماهه",
-                          style: TextStyle(
-                            fontFamily: 'SM',
-                            fontSize: 12,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              width: 30,
-                              decoration: const BoxDecoration(
-                                color: ConstColor.red,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 3, horizontal: 6),
-                                    child: Text(
-                                      '%3',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 12),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            const Text(
-                              "تومان",
-                              style: TextStyle(
-                                fontFamily: 'SM',
-                                fontSize: 12,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 4,
-                            ),
-                            const Text(
-                              "49,000,000",
-                              style: TextStyle(
-                                fontFamily: 'SM',
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Wrap(
-                          spacing: 8,
-                          children: [
-                            const DeleteChip(),
-                            OptionChip(
-                              title: "آبی",
-                              color: "34abeb",
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: SizedBox(
-                    height: 104,
-                    width: 75,
-                    child: CachedImage(
-                      imageUrl: cartItem.thumbnail,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: DottedLine(
-              lineThickness: 3,
-              dashLength: 8.0,
-              dashColor: ConstColor.grey.withOpacity(0.5),
-              dashGapLength: 3.0,
-              dashGapColor: Colors.transparent,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "تومان",
-                  style: TextStyle(fontFamily: "SB", fontSize: 16),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "49,000,000",
-                  style: TextStyle(fontFamily: "SB", fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
