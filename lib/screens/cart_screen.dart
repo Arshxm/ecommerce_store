@@ -1,17 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:dotted_line/dotted_line.dart';
+
 import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce_store/bloc/basket/basket_state.dart';
-import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:ecommerce_store/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
-
 import 'package:ecommerce_store/constants/colors.dart';
 import 'package:ecommerce_store/model/cart_item.dart';
 import 'package:ecommerce_store/util/extensions/String_Extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:zarinpal/zarinpal.dart';
 
 import '';
 
@@ -23,19 +20,12 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  PaymentRequest _paymentRequest = PaymentRequest();
-
   @override
   void initState() {
-
     super.initState();
 
-    _paymentRequest.setIsSandBox(true);
-    _paymentRequest.setAmount(1000);
-    _paymentRequest.setDescription("this is a test for apple shop application");
-    _paymentRequest.setCallbackURL('expertflutter://shop');
-
   }
+
   @override
   Widget build(BuildContext context) {
     var basketTotalPrice;
@@ -112,7 +102,8 @@ class _CartScreenState extends State<CartScreen> {
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
                           onPressed: () {
-
+                            //context.read<BasketBloc>().add(BasketPaymentInitEvent());
+                            // context.read<BasketBloc>().add(BasketPaymentRequestEvent());
                           },
                           child: Text(
                             (totalPrice == 0)
