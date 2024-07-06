@@ -6,8 +6,8 @@ import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 
 class CartItem extends StatelessWidget {
-  BasketItem cartItem;
-  CartItem({
+  final BasketItem cartItem;
+  const CartItem({
     Key? key,
     required this.cartItem,
   }) : super(key: key);

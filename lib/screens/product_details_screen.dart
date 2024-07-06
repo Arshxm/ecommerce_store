@@ -7,13 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:ecommerce_store/bloc/product/product_bloc.dart';
 import 'package:ecommerce_store/bloc/product/product_event.dart';
 import 'package:ecommerce_store/bloc/product/product_state.dart';
 import 'package:ecommerce_store/constants/colors.dart';
-import 'package:ecommerce_store/model/cart_item.dart';
 import 'package:ecommerce_store/model/product.dart';
 import 'package:ecommerce_store/model/product_image.dart';
 import 'package:ecommerce_store/model/product_variant.dart';
@@ -23,9 +20,9 @@ import 'package:ecommerce_store/model/variant_type.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  Product product;
-  Property? property;
-  ProductDetailsScreen({
+  final Product product;
+  final Property? property;
+  const ProductDetailsScreen({
     Key? key,
     required this.product,
     this.property,
@@ -141,12 +138,12 @@ class DetailContentWidget extends StatelessWidget {
                   if (state is ProductDetailResponseState) ...{
                     SliverToBoxAdapter(
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.only(bottom: 20),
                         child: Text(
                           state.productName.fold((l) {
                             return "Nothing to show";
                           }, (product) {
-                            return "${product.name}";
+                            return product.name;
                           }),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
@@ -437,9 +434,9 @@ class DetailContentWidget extends StatelessWidget {
 }
 
 class ProductProperties extends StatefulWidget {
-  List<Property> propertyList;
+  final List<Property> propertyList;
 
-  ProductProperties({
+  const ProductProperties({
     Key? key,
     required this.propertyList,
   }) : super(key: key);
@@ -528,8 +525,8 @@ class _ProductPropertiesState extends State<ProductProperties> {
 }
 
 class ProductDescription extends StatefulWidget {
-  String productDescription;
-  ProductDescription({
+  final String productDescription;
+  const ProductDescription({
     Key? key,
     required this.productDescription,
   }) : super(key: key);
@@ -615,8 +612,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
 }
 
 class VariantContainerGenerator extends StatelessWidget {
-  List<ProductVariant> productVariantList;
-  VariantContainerGenerator({
+  final List<ProductVariant> productVariantList;
+  const VariantContainerGenerator({
     Key? key,
     required this.productVariantList,
   }) : super(key: key);
@@ -640,8 +637,8 @@ class VariantContainerGenerator extends StatelessWidget {
 }
 
 class VariantGeneratorChild extends StatelessWidget {
-  ProductVariant productVariant;
-  VariantGeneratorChild({super.key, required this.productVariant});
+  final ProductVariant productVariant;
+  const VariantGeneratorChild({super.key, required this.productVariant});
 
   @override
   Widget build(BuildContext context) {
@@ -664,8 +661,7 @@ class VariantGeneratorChild extends StatelessWidget {
           Row(
             children: [
               if (productVariant.variantType.type == VariantTypeEnum.COLOR) ...{
-                ColorVariantList(variantList: productVariant.variantList) ??
-                    Text("null"),
+                ColorVariantList(variantList: productVariant.variantList),
               },
               if (productVariant.variantType.type ==
                   VariantTypeEnum.STORAGE) ...{
@@ -681,10 +677,10 @@ class VariantGeneratorChild extends StatelessWidget {
 }
 
 class GalleryWidget extends StatefulWidget {
-  List<ProductImage> productImageList;
-  String defaultProductThumbnail;
+  final List<ProductImage> productImageList;
+  final String defaultProductThumbnail;
 
-  GalleryWidget({
+  const GalleryWidget({
     Key? key,
     required this.productImageList,
     required this.defaultProductThumbnail,
@@ -728,7 +724,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                         width: 200,
                         child: CachedImage(
                             imageUrl: (widget.productImageList.isEmpty)
-                                ? widget.defaultProductThumbnail!
+                                ? widget.defaultProductThumbnail
                                 : widget
                                     .productImageList[_selectedItem].imageUrl!),
                       ),
@@ -797,8 +793,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
 }
 
 class AddToBasketButton extends StatelessWidget {
-  Product product;
-  AddToBasketButton({
+  final Product product;
+  const AddToBasketButton({
     Key? key,
     required this.product,
   }) : super(key: key);
@@ -871,7 +867,7 @@ class PriceTagButton extends StatelessWidget {
                 height: 53,
                 width: 160,
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -923,7 +919,7 @@ class PriceTagButton extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       const Text(
@@ -942,7 +938,7 @@ class PriceTagButton extends StatelessWidget {
   }
 }
 
-List<Widget> _buildColorVariantsOption(List<Variant> variantList) {
+List<Widget> buildColorVariantsOption(List<Variant> variantList) {
   List<Widget> colorWidgets = [];
   for (var colorVariant in variantList) {
     String variantColor = "ff${colorVariant.value}";
@@ -953,7 +949,7 @@ List<Widget> _buildColorVariantsOption(List<Variant> variantList) {
       height: 26,
       decoration: BoxDecoration(
         color: Color(hexColor),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
     );
     colorWidgets.add(item);
@@ -963,8 +959,8 @@ List<Widget> _buildColorVariantsOption(List<Variant> variantList) {
 }
 
 class ColorVariantList extends StatefulWidget {
-  List<Variant> variantList;
-  ColorVariantList({super.key, required this.variantList});
+  final List<Variant> variantList;
+  const ColorVariantList({super.key, required this.variantList});
 
   @override
   State<ColorVariantList> createState() => _ColorVariantListState();
@@ -1010,12 +1006,11 @@ class _ColorVariantListState extends State<ColorVariantList> {
                   height: 26,
                   decoration: BoxDecoration(
                     color: Color(hexColor),
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                 ),
               ),
             );
-            ;
           }),
         ),
       ),
@@ -1024,8 +1019,8 @@ class _ColorVariantListState extends State<ColorVariantList> {
 }
 
 class StorageVariantList extends StatefulWidget {
-  List<Variant> storageVariantList;
-  StorageVariantList({
+  final List<Variant> storageVariantList;
+  const StorageVariantList({
     Key? key,
     required this.storageVariantList,
   }) : super(key: key);
@@ -1046,7 +1041,7 @@ class _StorageVariantListState extends State<StorageVariantList> {
         width: 200,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: widget.storageVariantList.length ?? 2,
+          itemCount: widget.storageVariantList.length,
           itemBuilder: ((context, index) {
             return GestureDetector(
               onTap: () {
@@ -1058,11 +1053,12 @@ class _StorageVariantListState extends State<StorageVariantList> {
                 width: 74,
                 height: 26,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: Text(
-                    widget.storageVariantList[index].value! ?? "128",
+                    widget.storageVariantList[index].value ?? "128",
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ),
                 decoration: BoxDecoration(

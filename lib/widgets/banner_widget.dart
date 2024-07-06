@@ -1,16 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import 'package:ecommerce_store/model/banner.dart';
 import 'package:ecommerce_store/model/category.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
-
 import '../constants/colors.dart';
 import 'category_horizontal_itemList.dart';
 
 class BannerSlider extends StatelessWidget {
-  List<HomeBanner> bannerList;
+  final List<HomeBanner> bannerList;
   BannerSlider({super.key, required this.bannerList});
 
   final PageController controller = PageController(viewportFraction: 0.9);
@@ -26,7 +24,7 @@ class BannerSlider extends StatelessWidget {
             controller: controller,
             itemBuilder: ((context, index) {
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 6),
+                margin: const EdgeInsets.symmetric(horizontal: 6),
                 child: CachedImage(imageUrl: bannerList[index].thumbnail!,radius: 15,boxFit: BoxFit.fill,));
             }),
             itemCount: bannerList.length,
@@ -52,7 +50,7 @@ class BannerSlider extends StatelessWidget {
 
 class CategoryListViewBuilder extends StatelessWidget {
   final List<Category> categoryList;
-  CategoryListViewBuilder({
+  const CategoryListViewBuilder({
     Key? key,
     required this.categoryList,
   }) : super(key: key);
@@ -65,7 +63,7 @@ class CategoryListViewBuilder extends StatelessWidget {
         itemBuilder: (context, index) {
           return 
           Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20,
             ),
             child: CategoryHorizontalItemList(category: categoryList[index],),

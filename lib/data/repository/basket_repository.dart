@@ -2,8 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:ecommerce_store/data/dataSource/basket_datasource.dart';
 import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/model/cart_item.dart';
-import 'package:ecommerce_store/util/api_exception.dart';
-
 
 abstract class IBasketRepository {
   Future<Either<String,String>> addProductToBasket(BasketItem basketItem);

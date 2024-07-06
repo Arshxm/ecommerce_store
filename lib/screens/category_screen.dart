@@ -1,10 +1,8 @@
 import 'package:ecommerce_store/bloc/category/category_bloc.dart';
 import 'package:ecommerce_store/bloc/category/category_event.dart';
 import 'package:ecommerce_store/bloc/category/category_state.dart';
-import 'package:ecommerce_store/data/repository/category_repository.dart';
 import 'package:ecommerce_store/model/category.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
-import 'package:ecommerce_store/widgets/myBehavior.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -89,7 +87,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 }
 
 class _listCategory extends StatelessWidget {
-  List<Category>? list;
+  final List<Category>? list;
   _listCategory({super.key, required this.list});
 
   @override

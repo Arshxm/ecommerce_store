@@ -1,17 +1,15 @@
 import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
-import 'package:ecommerce_store/bloc/product/product_bloc.dart';
 import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/model/product.dart';
 import 'package:ecommerce_store/screens/product_details_screen.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../constants/colors.dart';
 
 class ProductItem extends StatelessWidget {
-  Product product;
-  ProductItem({
+  final Product product;
+  const ProductItem({
     required this.product,
     super.key,
   });
@@ -71,7 +69,7 @@ class ProductItem extends StatelessWidget {
                       children: [
                         Padding(
                           padding:
-                              EdgeInsets.symmetric(vertical: 3, horizontal: 6),
+                              const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
                           child: Text(
                             '${product.percent!.round().toString()}%',
                             style: const TextStyle(

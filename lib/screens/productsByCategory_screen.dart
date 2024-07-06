@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:ecommerce_store/bloc/product/product_bloc.dart';
-import 'package:ecommerce_store/bloc/product/product_event.dart';
 import 'package:ecommerce_store/bloc/productById/productById_event.dart';
 import 'package:ecommerce_store/model/category.dart';
 import 'package:ecommerce_store/widgets/product_item.dart';
@@ -11,8 +9,8 @@ import 'package:ecommerce_store/bloc/productById/productById_state.dart';
 import 'package:ecommerce_store/constants/colors.dart';
 
 class ProductsByCategoryScreen extends StatefulWidget {
-  Category category;
-  ProductsByCategoryScreen({
+  final Category category;
+  const ProductsByCategoryScreen({
     Key? key,
     required this.category,
   }) : super(key: key);
@@ -25,6 +23,7 @@ class ProductsByCategoryScreen extends StatefulWidget {
 class _ProductsByCategoryScreenState extends State<ProductsByCategoryScreen> {
   @override
   void initState() {
+    super.initState(); 
     BlocProvider.of<ProductByIdBloc>(context)
         .add(ProductByIdGetInitializedData(widget.category.id!));
   }
@@ -101,13 +100,13 @@ class _ProductsByCategoryScreenState extends State<ProductsByCategoryScreen> {
                 if (state is ProductByIdResponseState) ...{
                   state.productList.fold(
                     (l) {
-                      return SliverToBoxAdapter(
+                      return const SliverToBoxAdapter(
                         child: Text("nothing"),
                       );
                     },
                     (r) {
                       return SliverPadding(
-                        padding: EdgeInsets.symmetric(horizontal: 44),
+                        padding: const EdgeInsets.symmetric(horizontal: 44),
                         sliver: SliverGrid(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {

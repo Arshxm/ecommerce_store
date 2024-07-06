@@ -8,10 +8,10 @@ extension colorParsing on String {
   }
   String? extractValueFromQuery(String key) {
     // Remove everything before the question mark
-    int queryStartIndex = this!.indexOf('?');
+    int queryStartIndex = this.indexOf('?');
     if (queryStartIndex == -1) return null;
 
-    String query = this!.substring(queryStartIndex + 1);
+    String query = this.substring(queryStartIndex + 1);
 
     // Split the query into key-value pairs
     List<String> pairs = query.split('&');

@@ -3,7 +3,6 @@ import 'package:ecommerce_store/data/dataSource/authentication_datasource.dart';
 import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/util/api_exception.dart';
 import 'package:ecommerce_store/util/auth_manager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class IAuthRepository {
   Future<Either<String, String>> register(
@@ -14,7 +13,7 @@ abstract class IAuthRepository {
 class AuthenticationRepository implements IAuthRepository {
   final IAuthenticationDataSource _dataSource = locator.get();
 
-  final SharedPreferences _sharedPref = locator.get();
+  //final SharedPreferences _sharedPref = locator.get();
 
   @override
   Future<Either<String, String>> register(

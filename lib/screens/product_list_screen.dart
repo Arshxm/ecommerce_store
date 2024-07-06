@@ -1,6 +1,4 @@
-import 'package:ecommerce_store/widgets/product_item.dart';
 import 'package:flutter/material.dart';
-
 import '../constants/colors.dart';
 
 class ProductListScreen extends StatelessWidget {

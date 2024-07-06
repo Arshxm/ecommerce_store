@@ -82,7 +82,7 @@ class DetailProductRemoteDatasource extends IDetailProductDatasource {
 
     try {
       for (var variantType in variantTypeList) {
-        var variantListId = variantList
+        variantList
             .where((element) => element.typeId == variantType.id)
             .toList();
         productVariantList.add(

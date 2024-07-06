@@ -5,12 +5,8 @@ import 'package:ecommerce_store/bloc/basket/basket_state.dart';
 import 'package:ecommerce_store/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_store/constants/colors.dart';
-import 'package:ecommerce_store/model/cart_item.dart';
 import 'package:ecommerce_store/util/extensions/String_Extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
-import '';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -28,8 +24,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var basketTotalPrice;
-    var box = Hive.box<BasketItem>('CartBox');
+    // var box = Hive.box<BasketItem>('CartBox');
     return Scaffold(
       backgroundColor: ConstColor.backgroundScreenColor,
       body: SafeArea(
@@ -170,8 +165,8 @@ class DeleteChip extends StatelessWidget {
 
 //TODO Chip in cart screen
 class OptionChip extends StatelessWidget {
-  String? color;
-  String title;
+  final String? color;
+  final String title;
   OptionChip({
     Key? key,
     this.color,

@@ -3,10 +3,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CachedImage extends StatelessWidget {
-  String imageUrl;
-  double radius;
-  BoxFit? boxFit;
-  CachedImage({
+  final String imageUrl;
+  final double radius;
+  final BoxFit? boxFit;
+  const CachedImage({
     Key? key,
     required this.imageUrl,
     this.radius = 0,
