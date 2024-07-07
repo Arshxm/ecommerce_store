@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce_store/bloc/basket/basket_event.dart';
+import 'package:ecommerce_store/di/di.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -38,7 +39,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        var bloc = ProductBloc();
+        var bloc = ProductBloc(locator.get(), locator.get());
         bloc.add(
           ProductInitializeEvent(
             productId: widget.product.id,

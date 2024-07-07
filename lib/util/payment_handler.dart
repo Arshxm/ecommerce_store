@@ -10,11 +10,11 @@ abstract class PaymentHandler {
 }
 
 class ZarinpalPaymentHandler extends PaymentHandler {
-  final PaymentRequest _paymentRequest = PaymentRequest();
-  UrlHandler urlHandler = UrlLauncher();
+  final PaymentRequest _paymentRequest ;
+  UrlHandler urlHandler ;
   String? _authority;
   String? _status;
-
+  ZarinpalPaymentHandler(this._paymentRequest, this.urlHandler);
   @override
   Future<void> initPaymentRequest() async {
     _paymentRequest.setIsSandBox(true);

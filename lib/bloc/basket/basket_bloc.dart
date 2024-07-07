@@ -1,15 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
+
 import 'package:ecommerce_store/bloc/basket/basket_event.dart';
 import 'package:ecommerce_store/bloc/basket/basket_state.dart';
 import 'package:ecommerce_store/data/repository/basket_repository.dart';
-import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/util/payment_handler.dart';
 
 class BasketBloc extends Bloc<BasketEvent, BasketState> {
-  IBasketRepository _basketRepository = locator.get();
-  PaymentHandler paymentHandler = ZarinpalPaymentHandler();
+  final IBasketRepository _basketRepository ;
+  final PaymentHandler _paymentHandler ;
 
-  BasketBloc() : super(BasketInitState()) {
+  BasketBloc(
+    this._paymentHandler,
+    this._basketRepository 
+  ) : super(BasketInitState()) {
     on<BasketFetchFromHiveEvent>(
       (event, emit) async {
         var _basketItemList = await _basketRepository.getAllBasketItems();
@@ -19,11 +23,11 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     );
 
     on<BasketPaymentInitEvent>((event, emit) async {
-      paymentHandler.initPaymentRequest();
+      _paymentHandler.initPaymentRequest();
     });
 
     on<BasketPaymentRequestEvent>((event, emit) async {
-      paymentHandler.sendPaymentRequest();
+      _paymentHandler.sendPaymentRequest();
     });
   }
 }

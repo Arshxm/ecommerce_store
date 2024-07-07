@@ -17,14 +17,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Hive.initFlutter();
   Hive.registerAdapter(BasketItemAdapter());
   await Hive.openBox<BasketItem>('CartBox');
 
   await getItInit();
-
-
 
   runApp(const MyApp());
 }
@@ -179,13 +177,14 @@ class _MyAppState extends State<MyApp> {
         child: CartScreen(),
       ),
       BlocProvider(
-        create: (context) => CategoryBloc(),
+        create: (context) => CategoryBloc(locator.get()),
         child: CategoryScreen(),
       ),
       Directionality(
         textDirection: TextDirection.rtl,
         child: BlocProvider(
-          create: (context) => HomeBloc(),
+          create: (context) =>
+              HomeBloc(locator.get(), locator.get(), locator.get()),
           child: HomeScreen(),
         ),
       ),

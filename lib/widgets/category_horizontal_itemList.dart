@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:ecommerce_store/bloc/productById/productById_bloc.dart';
+import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/screens/productsByCategory_screen.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,7 @@ class CategoryHorizontalItemList extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => BlocProvider(
-                    create: (context) => ProductByIdBloc(),
+                    create: (context) => ProductByIdBloc(locator.get()),
                     child: ProductsByCategoryScreen(category: category),
                   ),
                 ));
