@@ -17,6 +17,7 @@ class ZarinpalPaymentHandler extends PaymentHandler {
   ZarinpalPaymentHandler(this.urlHandler);
   @override
   Future<void> initPaymentRequest() async {
+    
     _paymentRequest.setIsSandBox(true);
     _paymentRequest.setAmount(1000);
     _paymentRequest.setMerchantID('test');

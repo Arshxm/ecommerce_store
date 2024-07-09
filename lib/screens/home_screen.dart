@@ -1,8 +1,8 @@
+import 'package:ecommerce_store/bloc/home/home_event.dart';
 import 'package:ecommerce_store/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecommerce_store/bloc/home/home_bloc.dart';
-import 'package:ecommerce_store/bloc/home/home_event.dart';
 import 'package:ecommerce_store/bloc/home/home_state.dart';
 import 'package:ecommerce_store/model/banner.dart';
 import 'package:ecommerce_store/model/category.dart';
@@ -11,19 +11,8 @@ import '../constants/colors.dart';
 import '../widgets/banner_widget.dart';
 import '../widgets/product_item.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<HomeBloc>(context).add(HomeGetInitializedData());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +20,14 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: ConstColor.backgroundScreenColor,
       body: SafeArea(
         child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-          return _getHomeScreenContent(state);
+          return _getHomeScreenContent(context, state);
         }),
       ),
     );
   }
 }
 
-Widget _getHomeScreenContent(HomeState state) {
+Widget _getHomeScreenContent(BuildContext context, HomeState state) {
   if (state is HomeLoadingState) {
     return Center(
       child: LoadingAnimationWidget.flickr(
@@ -49,15 +38,15 @@ Widget _getHomeScreenContent(HomeState state) {
   } else if (state is HomeResponseState) {
     return RefreshIndicator(
       onRefresh: () async {
-
+        context.read<HomeBloc>().add(HomeGetInitializedData());
       },
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           //Banner States
-      
+
           const _GetSearchBox(),
-      
+
           state.response.fold((l) {
             return SliverToBoxAdapter(
               child: Text(l),
@@ -67,10 +56,10 @@ Widget _getHomeScreenContent(HomeState state) {
               list: r,
             );
           }),
-      
+
           const _GetCategoryTitle(),
           //Category States
-      
+
           state.categoryList.fold((l) {
             return SliverToBoxAdapter(
               child: Text(l),
@@ -78,9 +67,9 @@ Widget _getHomeScreenContent(HomeState state) {
           }, (categoryList) {
             return _GetCategoryList(categoryList: categoryList);
           }),
-      
+
           const _getBestSellersTitle(),
-      
+
           state.bestSellerProductList.fold((l) {
             return SliverToBoxAdapter(
               child: Text(l),
@@ -88,9 +77,9 @@ Widget _getHomeScreenContent(HomeState state) {
           }, (r) {
             return _GetBestSellerProductsList(r);
           }),
-      
+
           const _GetMostViewedTitle(),
-      
+
           state.hotestProductList.fold((l) {
             return SliverToBoxAdapter(
               child: Text(l),

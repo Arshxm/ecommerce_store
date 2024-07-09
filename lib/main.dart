@@ -3,6 +3,7 @@ import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce_store/bloc/basket/basket_event.dart';
 import 'package:ecommerce_store/bloc/category/category_bloc.dart';
 import 'package:ecommerce_store/bloc/home/home_bloc.dart';
+import 'package:ecommerce_store/bloc/home/home_event.dart';
 import 'package:ecommerce_store/constants/colors.dart';
 import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/model/cart_item.dart';
@@ -183,8 +184,11 @@ class _MyAppState extends State<MyApp> {
       Directionality(
         textDirection: TextDirection.rtl,
         child: BlocProvider(
-          create: (context) =>
-              HomeBloc(locator.get(), locator.get(), locator.get()),
+          create: (context) {
+            var bloc = HomeBloc(locator.get(), locator.get(), locator.get());
+            bloc.add(HomeGetInitializedData());
+            return bloc;
+          },
           child: const HomeScreen(),
         ),
       ),
