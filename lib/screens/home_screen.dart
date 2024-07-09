@@ -31,75 +31,80 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: ConstColor.backgroundScreenColor,
       body: SafeArea(
         child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-          return CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              //Banner States
-              if (state is HomeLoadingState) ...{
-                SliverToBoxAdapter(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: LoadingAnimationWidget.flickr(leftDotColor: ConstColor.blue, rightDotColor: ConstColor.red, size: 20)),
-                    ],
-                  ),
-                )
-              } else ...{
-                const _GetSearchBox(),
-                if (state is HomeResponseState) ...[
-                  state.response.fold((l) {
-                    return SliverToBoxAdapter(
-                      child: Text(l),
-                    );
-                  }, (r) {
-                    return _getBanners(
-                      list: r,
-                    );
-                  })
-                ],
-                _GetCategoryTitle(),
-                //Category States
-                if (state is HomeResponseState) ...[
-                  state.categoryList.fold((l) {
-                    return SliverToBoxAdapter(
-                      child: Text(l),
-                    );
-                  }, (categoryList) {
-                    return _GetCategoryList(categoryList: categoryList);
-                  })
-                ],
-                _getBestSellersTitle(),
-                if (state is HomeResponseState) ...[
-                  state.bestSellerProductList.fold((l) {
-                    return SliverToBoxAdapter(
-                      child: Text(l),
-                    );
-                  }, (r) {
-                    return _GetBestSellerProductsList(r);
-                  })
-                ],
-                const _GetMostViewedTitle(),
-                if (state is HomeResponseState) ...{
-                  state.hotestProductList.fold((l) {
-                    return SliverToBoxAdapter(
-                      child: Text(l),
-                    );
-                  }, (r) {
-                    return _GetMostViewedProductList(
-                      productList: r,
-                    );
-                  })
-                },
-              }
-            ],
-          );
+          return _getHomeScreenContent(state);
         }),
       ),
     );
+  }
+}
+
+Widget _getHomeScreenContent(HomeState state) {
+  if (state is HomeLoadingState) {
+    return Center(
+      child: LoadingAnimationWidget.flickr(
+          leftDotColor: ConstColor.blue,
+          rightDotColor: ConstColor.red,
+          size: 50),
+    );
+  } else if (state is HomeResponseState) {
+    return RefreshIndicator(
+      onRefresh: () async {
+
+      },
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          //Banner States
+      
+          const _GetSearchBox(),
+      
+          state.response.fold((l) {
+            return SliverToBoxAdapter(
+              child: Text(l),
+            );
+          }, (r) {
+            return _getBanners(
+              list: r,
+            );
+          }),
+      
+          const _GetCategoryTitle(),
+          //Category States
+      
+          state.categoryList.fold((l) {
+            return SliverToBoxAdapter(
+              child: Text(l),
+            );
+          }, (categoryList) {
+            return _GetCategoryList(categoryList: categoryList);
+          }),
+      
+          const _getBestSellersTitle(),
+      
+          state.bestSellerProductList.fold((l) {
+            return SliverToBoxAdapter(
+              child: Text(l),
+            );
+          }, (r) {
+            return _GetBestSellerProductsList(r);
+          }),
+      
+          const _GetMostViewedTitle(),
+      
+          state.hotestProductList.fold((l) {
+            return SliverToBoxAdapter(
+              child: Text(l),
+            );
+          }, (r) {
+            return _GetMostViewedProductList(
+              productList: r,
+            );
+          })
+        ],
+      ),
+    );
+  } else {
+    return const Text("salam");
   }
 }
 
@@ -183,7 +188,6 @@ class _GetCategoryList extends StatelessWidget {
         height: 100,
         child: CategoryListViewBuilder(
           categoryList: categoryList,
-
         ),
       ),
     );

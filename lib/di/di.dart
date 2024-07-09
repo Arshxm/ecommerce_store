@@ -18,18 +18,15 @@ import 'package:ecommerce_store/util/payment_handler.dart';
 import 'package:ecommerce_store/util/url_handler.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zarinpal/zarinpal.dart';
 
 var locator = GetIt.instance;
 
 Future<void> getItInit() async {
   //Util
-
-  locator.registerSingleton<PaymentHandler>(ZarinpalPaymentHandler(locator.get(),locator.get()));
-
-  locator.registerSingleton<PaymentRequest>(payment);
-  
   locator.registerSingleton<UrlHandler>(UrlLauncher());
+  
+  locator
+      .registerSingleton<PaymentHandler>(ZarinpalPaymentHandler(locator.get()));
 
   //components
 
