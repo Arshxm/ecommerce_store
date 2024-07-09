@@ -174,18 +174,18 @@ class _MyAppState extends State<MyApp> {
           bloc.add(BasketFetchFromHiveEvent());
           return bloc;
         },
-        child: CartScreen(),
+        child: const CartScreen(),
       ),
       BlocProvider(
         create: (context) => CategoryBloc(locator.get()),
-        child: CategoryScreen(),
+        child: const CategoryScreen(),
       ),
       Directionality(
         textDirection: TextDirection.rtl,
         child: BlocProvider(
           create: (context) =>
               HomeBloc(locator.get(), locator.get(), locator.get()),
-          child: HomeScreen(),
+          child: const HomeScreen(),
         ),
       ),
     ];

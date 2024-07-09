@@ -127,7 +127,9 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-//TODO Delete Chip in cart screen
+// Delete Chip in cart screen
+
+
 class DeleteChip extends StatelessWidget {
   const DeleteChip({
     super.key,
@@ -163,7 +165,9 @@ class DeleteChip extends StatelessWidget {
   }
 }
 
-//TODO Chip in cart screen
+// Chip in cart screen
+
+
 class OptionChip extends StatelessWidget {
   final String? color;
   final String title;

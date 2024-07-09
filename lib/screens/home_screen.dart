@@ -6,6 +6,7 @@ import 'package:ecommerce_store/bloc/home/home_event.dart';
 import 'package:ecommerce_store/bloc/home/home_state.dart';
 import 'package:ecommerce_store/model/banner.dart';
 import 'package:ecommerce_store/model/category.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../constants/colors.dart';
 import '../widgets/banner_widget.dart';
 import '../widgets/product_item.dart';
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             slivers: [
               //Banner States
               if (state is HomeLoadingState) ...{
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(
                           height: 24,
                           width: 24,
-                          child: CircularProgressIndicator()),
+                          child: LoadingAnimationWidget.flickr(leftDotColor: ConstColor.blue, rightDotColor: ConstColor.red, size: 20)),
                     ],
                   ),
                 )

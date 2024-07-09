@@ -27,7 +27,7 @@ Future<void> getItInit() async {
 
   locator.registerSingleton<PaymentHandler>(ZarinpalPaymentHandler(locator.get(),locator.get()));
 
-  locator.registerSingleton<PaymentRequest>(PaymentRequest());
+  locator.registerSingleton<PaymentRequest>(payment);
   
   locator.registerSingleton<UrlHandler>(UrlLauncher());
 
