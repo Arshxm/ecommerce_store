@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 extension colorParsing on String {
   Color colorParse() {
     String chipColor = "ff$this";
@@ -32,4 +31,5 @@ extension colorParsing on String {
 
     return null;
   }
+
 }

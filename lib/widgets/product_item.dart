@@ -2,6 +2,7 @@ import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce_store/di/di.dart';
 import 'package:ecommerce_store/model/product.dart';
 import 'package:ecommerce_store/screens/product_details_screen.dart';
+import 'package:ecommerce_store/util/extensions/Int_Extensions.dart';
 import 'package:ecommerce_store/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,9 @@ class ProductItem extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => BlocProvider<BasketBloc>.value(
               value: locator.get<BasketBloc>(),
-              child: ProductDetailsScreen(product: product,),
+              child: ProductDetailsScreen(
+                product: product,
+              ),
             ),
           ),
         );
@@ -68,8 +71,8 @@ class ProductItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding:
-                              const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 3, horizontal: 6),
                           child: Text(
                             '${product.percent!.round().toString()}%',
                             style: const TextStyle(
@@ -89,7 +92,8 @@ class ProductItem extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 product.name,
-                style: const TextStyle(fontSize: 14, overflow: TextOverflow.ellipsis),
+                style: const TextStyle(
+                    fontSize: 14, overflow: TextOverflow.ellipsis),
                 maxLines: 1,
               ),
             ),
@@ -127,7 +131,7 @@ class ProductItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "${product.realPrice}",
+                          product.realPrice!.formatPriceWithCommas(),
                           style: const TextStyle(
                             fontFamily: 'RM',
                             fontSize: 12,
@@ -137,7 +141,7 @@ class ProductItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${product.price}",
+                          product.price.formatPriceWithCommas(),
                           style: const TextStyle(
                             fontFamily: 'RM',
                             fontSize: 16,
