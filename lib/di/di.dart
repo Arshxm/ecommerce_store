@@ -4,6 +4,7 @@ import 'package:ecommerce_store/data/dataSource/authentication_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/banner_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/basket_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/category_datasource.dart';
+import 'package:ecommerce_store/data/dataSource/comment_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/productByCategoryId_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/product_datasource.dart';
 import 'package:ecommerce_store/data/dataSource/product_detail_datasource.dart';
@@ -11,6 +12,7 @@ import 'package:ecommerce_store/data/repository/authentication_repository.dart';
 import 'package:ecommerce_store/data/repository/banner_repository.dart';
 import 'package:ecommerce_store/data/repository/basket_repository.dart';
 import 'package:ecommerce_store/data/repository/category_repository.dart';
+import 'package:ecommerce_store/data/repository/comment_repository.dart';
 import 'package:ecommerce_store/data/repository/productByCategoryId_repository.dart';
 import 'package:ecommerce_store/data/repository/product_detail_repository.dart';
 import 'package:ecommerce_store/data/repository/product_repository.dart';
@@ -59,6 +61,8 @@ Future<void> getItInit() async {
 
   locator.registerFactory<IBasketDataSource>(() => BasketLocalDatasource());
 
+  locator.registerFactory<ICommentDatasource>(() => CommentRemoteDatasource());
+
   //Repositories
 
   locator.registerFactory<IAuthRepository>(() => AuthenticationRepository());
@@ -76,6 +80,8 @@ Future<void> getItInit() async {
       () => ProductByCategoryIdRepository());
 
   locator.registerFactory<IBasketRepository>(() => BasketRepository());
+
+  locator.registerFactory<ICommentRepository>(() => CommentRepository());
 
   //BLoC
 
