@@ -1,12 +1,12 @@
 import 'package:ecommerce_store/bloc/home/home_event.dart';
 import 'package:ecommerce_store/model/product.dart';
+import 'package:ecommerce_store/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecommerce_store/bloc/home/home_bloc.dart';
 import 'package:ecommerce_store/bloc/home/home_state.dart';
 import 'package:ecommerce_store/model/banner.dart';
 import 'package:ecommerce_store/model/category.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../constants/colors.dart';
 import '../widgets/banner_widget.dart';
 import '../widgets/product_item.dart';
@@ -29,12 +29,7 @@ class HomeScreen extends StatelessWidget {
 
 Widget _getHomeScreenContent(BuildContext context, HomeState state) {
   if (state is HomeLoadingState) {
-    return Center(
-      child: LoadingAnimationWidget.flickr(
-          leftDotColor: ConstColor.blue,
-          rightDotColor: ConstColor.red,
-          size: 50),
-    );
+    return const LoadingWidget();
   } else if (state is HomeResponseState) {
     return RefreshIndicator(
       onRefresh: () async {

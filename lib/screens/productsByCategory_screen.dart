@@ -106,7 +106,7 @@ class _ProductsByCategoryScreenState extends State<ProductsByCategoryScreen> {
                     },
                     (r) {
                       return SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 44),
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
                         sliver: SliverGrid(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {

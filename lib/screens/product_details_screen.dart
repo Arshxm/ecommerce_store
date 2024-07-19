@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:ecommerce_store/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce_store/bloc/basket/basket_event.dart';
 import 'package:ecommerce_store/di/di.dart';
+import 'package:ecommerce_store/widgets/Loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -67,23 +68,14 @@ class DetailContentWidget extends StatelessWidget {
       backgroundColor: ConstColor.backgroundScreenColor,
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
+          if (state is ProductDetailLoadingState) {
+            return const Center(child: LoadingWidget());
+          }
           return Directionality(
             textDirection: TextDirection.rtl,
             child: SafeArea(
               child: CustomScrollView(
                 slivers: [
-                  if (state is ProductDetailLoadingState) ...{
-                    const SliverToBoxAdapter(
-                      child: Center(
-                        child: SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                    )
-                  },
-
                   //TODO Category Name of each item
 
                   if (state is ProductDetailResponseState) ...{
@@ -131,12 +123,7 @@ class DetailContentWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )
-                  },
-
-                  //TODO Name of each item
-
-                  if (state is ProductDetailResponseState) ...{
+                    ),
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 20),
@@ -154,8 +141,6 @@ class DetailContentWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                  },
-                  if (state is ProductDetailResponseState) ...{
                     state.productImages.fold((l) {
                       return SliverToBoxAdapter(
                         child: Text(l),
@@ -165,9 +150,7 @@ class DetailContentWidget extends StatelessWidget {
                           defaultProductThumbnail:
                               parentWidget.product.thumbnail,
                           productImageList: response);
-                    })
-                  },
-                  if (state is ProductDetailResponseState) ...{
+                    }),
                     state.productVariant.fold(
                       (l) {
                         return SliverToBoxAdapter(
@@ -179,251 +162,244 @@ class DetailContentWidget extends StatelessWidget {
                           productVariantList: productVariantList,
                         );
                       },
-                    )
-                  },
+                    ),
+                    //TODO Storage Boxes
 
-                  //TODO Storage Boxes
+                    // SliverToBoxAdapter(
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(
+                    //       top: 20,
+                    //       right: 44,
+                    //       left: 44,
+                    //     ),
+                    //     child: Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       children: [
+                    //         const Text(
+                    //           "انتخاب حافظه داخلی",
+                    //           style: TextStyle(fontSize: 12),
+                    //         ),
+                    //         const SizedBox(
+                    //           height: 10,
+                    //         ),
+                    //         Row(
+                    //           children: [
+                    //             Container(
+                    //               width: 74,
+                    //               height: 26,
+                    //               child: const Padding(
+                    //                 padding: EdgeInsets.symmetric(
+                    //                     horizontal: 20, vertical: 5),
+                    //                 child: Text(
+                    //                   "128",
+                    //                   textAlign: TextAlign.center,
+                    //                   style: TextStyle(fontSize: 12),
+                    //                 ),
+                    //               ),
+                    //               decoration: BoxDecoration(
+                    //                   color: Colors.white,
+                    //                   borderRadius: const BorderRadius.all(
+                    //                       Radius.circular(8)),
+                    //                   border: Border.all(
+                    //                       width: 1, color: ConstColor.grey)),
+                    //             ),
+                    //             const SizedBox(
+                    //               width: 10,
+                    //             ),
+                    //             Container(
+                    //               width: 74,
+                    //               height: 26,
+                    //               child: const Padding(
+                    //                 padding: EdgeInsets.symmetric(
+                    //                     horizontal: 20, vertical: 5),
+                    //                 child: Text(
+                    //                   "128",
+                    //                   textAlign: TextAlign.center,
+                    //                   style: TextStyle(fontSize: 12),
+                    //                 ),
+                    //               ),
+                    //               decoration: BoxDecoration(
+                    //                   color: Colors.white,
+                    //                   borderRadius: const BorderRadius.all(
+                    //                       Radius.circular(8)),
+                    //                   border: Border.all(
+                    //                       width: 1, color: ConstColor.grey)),
+                    //             ),
+                    //             const SizedBox(
+                    //               width: 10,
+                    //             ),
+                    //             Container(
+                    //               width: 74,
+                    //               height: 26,
+                    //               child: const Padding(
+                    //                 padding: EdgeInsets.symmetric(
+                    //                     horizontal: 20, vertical: 5),
+                    //                 child: Text(
+                    //                   "128",
+                    //                   textAlign: TextAlign.center,
+                    //                   style: TextStyle(fontSize: 12),
+                    //                 ),
+                    //               ),
+                    //               decoration: BoxDecoration(
+                    //                   color: Colors.white,
+                    //                   borderRadius: const BorderRadius.all(
+                    //                       Radius.circular(8)),
+                    //                   border: Border.all(
+                    //                       width: 1, color: ConstColor.grey)),
+                    //             ),
+                    //           ],
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
 
-                  // SliverToBoxAdapter(
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(
-                  //       top: 20,
-                  //       right: 44,
-                  //       left: 44,
-                  //     ),
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         const Text(
-                  //           "انتخاب حافظه داخلی",
-                  //           style: TextStyle(fontSize: 12),
-                  //         ),
-                  //         const SizedBox(
-                  //           height: 10,
-                  //         ),
-                  //         Row(
-                  //           children: [
-                  //             Container(
-                  //               width: 74,
-                  //               height: 26,
-                  //               child: const Padding(
-                  //                 padding: EdgeInsets.symmetric(
-                  //                     horizontal: 20, vertical: 5),
-                  //                 child: Text(
-                  //                   "128",
-                  //                   textAlign: TextAlign.center,
-                  //                   style: TextStyle(fontSize: 12),
-                  //                 ),
-                  //               ),
-                  //               decoration: BoxDecoration(
-                  //                   color: Colors.white,
-                  //                   borderRadius: const BorderRadius.all(
-                  //                       Radius.circular(8)),
-                  //                   border: Border.all(
-                  //                       width: 1, color: ConstColor.grey)),
-                  //             ),
-                  //             const SizedBox(
-                  //               width: 10,
-                  //             ),
-                  //             Container(
-                  //               width: 74,
-                  //               height: 26,
-                  //               child: const Padding(
-                  //                 padding: EdgeInsets.symmetric(
-                  //                     horizontal: 20, vertical: 5),
-                  //                 child: Text(
-                  //                   "128",
-                  //                   textAlign: TextAlign.center,
-                  //                   style: TextStyle(fontSize: 12),
-                  //                 ),
-                  //               ),
-                  //               decoration: BoxDecoration(
-                  //                   color: Colors.white,
-                  //                   borderRadius: const BorderRadius.all(
-                  //                       Radius.circular(8)),
-                  //                   border: Border.all(
-                  //                       width: 1, color: ConstColor.grey)),
-                  //             ),
-                  //             const SizedBox(
-                  //               width: 10,
-                  //             ),
-                  //             Container(
-                  //               width: 74,
-                  //               height: 26,
-                  //               child: const Padding(
-                  //                 padding: EdgeInsets.symmetric(
-                  //                     horizontal: 20, vertical: 5),
-                  //                 child: Text(
-                  //                   "128",
-                  //                   textAlign: TextAlign.center,
-                  //                   style: TextStyle(fontSize: 12),
-                  //                 ),
-                  //               ),
-                  //               decoration: BoxDecoration(
-                  //                   color: Colors.white,
-                  //                   borderRadius: const BorderRadius.all(
-                  //                       Radius.circular(8)),
-                  //                   border: Border.all(
-                  //                       width: 1, color: ConstColor.grey)),
-                  //             ),
-                  //           ],
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-
-                  //TODO Technical details
-                  if (state is ProductDetailResponseState) ...{
                     state.productProperty.fold((l) {
                       return const SliverToBoxAdapter(
                         child: Text("coudn't load anything it is empty"),
                       );
                     }, (response) {
                       return ProductProperties(propertyList: response);
-                    })
-                  },
+                    }),
 
-                  //TODO About Product
+                    //TODO About Product
 
-                  ProductDescription(
-                    productDescription: parentWidget.product.description,
-                  ),
-
-                  //TODO Reviews
-
-                  SliverToBoxAdapter(
-                    child: Container(
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            "نظرات کاربران :",
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
-                                width: 26,
-                                height: 26,
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                ),
-                              ),
-                              Positioned(
-                                right: 15,
-                                child: Container(
+                    ProductDescription(
+                      productDescription: parentWidget.product.description,
+                    ),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              "نظرات کاربران :",
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Container(
                                   width: 26,
                                   height: 26,
                                   decoration: const BoxDecoration(
-                                    color: Colors.yellow,
+                                    color: Colors.red,
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(8)),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                right: 30,
-                                child: Container(
-                                  width: 26,
-                                  height: 26,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
+                                Positioned(
+                                  right: 15,
+                                  child: Container(
+                                    width: 26,
+                                    height: 26,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.yellow,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                right: 45,
-                                child: Container(
-                                  width: 26,
-                                  height: 26,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
+                                Positioned(
+                                  right: 30,
+                                  child: Container(
+                                    width: 26,
+                                    height: 26,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Positioned(
-                                right: 60,
-                                child: Container(
-                                  width: 26,
-                                  height: 26,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
+                                Positioned(
+                                  right: 45,
+                                  child: Container(
+                                    width: 26,
+                                    height: 26,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
                                   ),
-                                  child: const Center(
-                                    child: Text(
-                                      "+10",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10,
+                                ),
+                                Positioned(
+                                  right: 60,
+                                  child: Container(
+                                    width: 26,
+                                    height: 26,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        "+10",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          const Text(
-                            "مشاهده",
-                            style:
-                                TextStyle(fontSize: 12, color: ConstColor.blue),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Image.asset(
-                            "assets/images/icon_left_category.png",
-                            width: 20,
-                            height: 20,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      margin:
-                          const EdgeInsets.only(left: 44, right: 44, top: 24),
-                      height: 46,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            width: 1,
-                            color: ConstColor.grey,
-                          ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15))),
-                    ),
-                  ),
-
-                  //Buttons and price
-
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 20, right: 44, left: 44),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AddToBasketButton(product: parentWidget.product),
-                          const PriceTagButton()
-                        ],
+                              ],
+                            ),
+                            const Spacer(),
+                            const Text(
+                              "مشاهده",
+                              style: TextStyle(
+                                  fontSize: 12, color: ConstColor.blue),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Image.asset(
+                              "assets/images/icon_left_category.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                        margin:
+                            const EdgeInsets.only(left: 44, right: 44, top: 24),
+                        height: 46,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 1,
+                              color: ConstColor.grey,
+                            ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15))),
                       ),
                     ),
-                  )
+
+                    //Buttons and price
+
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 20, right: 44, left: 44),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            AddToBasketButton(product: parentWidget.product),
+                            const PriceTagButton()
+                          ],
+                        ),
+                      ),
+                    )
+                  },
                 ],
               ),
             ),
